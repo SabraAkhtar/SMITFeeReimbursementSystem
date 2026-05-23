@@ -14,9 +14,15 @@ public class DataSeedService(
     public async Task SeedAsync()
     {
         if (context.Database.IsSqlite())
+        {
+            // Fresh start — delete and recreate database to clear all old data
+            await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
+        }
         else
+        {
             await context.Database.MigrateAsync();
+        }
 
         await SeedRolesAsync();
         await SeedCoursesAsync();
