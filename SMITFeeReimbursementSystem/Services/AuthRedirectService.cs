@@ -8,9 +8,13 @@ public class AuthRedirectService(UserManager<ApplicationUser> userManager) : IAu
     public async Task<string> GetHomePathForUserAsync(ApplicationUser user)
     {
         if (await userManager.IsInRoleAsync(user, AppRoles.Admin))
-        {
             return "/Dashboard";
-        }
+
+        if (await userManager.IsInRoleAsync(user, AppRoles.Teacher))
+            return "/Attendance/Mark";
+
+        if (await userManager.IsInRoleAsync(user, AppRoles.Student))
+            return "/Payments/MyPayments";
 
         return "/";
     }
