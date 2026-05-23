@@ -5,7 +5,7 @@ using SMITFeeReimbursementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database: SQLite for production/deploy, SQL Server for local dev
+// Database: SQLite for production, SQL Server for local dev
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -32,13 +32,6 @@ builder.Services.AddScoped<IRefundEligibilityService, RefundEligibilityService>(
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddControllersWithViews();
 
-// Port from environment variable (Railway sets this)
-var port = Environment.GetEnvironmentVariable("PORT");
-if (!string.IsNullOrEmpty(port))
-{
-    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-}
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -55,7 +48,6 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
-    app.UseHttpsRedirection();
 }
 
 app.UseStaticFiles();

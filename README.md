@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SMIT Fee Reimbursement System
 
 ASP.NET Core MVC (.NET 10) web application with SQL Server, Entity Framework Core (Code First), and ASP.NET Core Identity.
@@ -104,3 +105,6 @@ Open `https://localhost:7xxx` (see console output for the exact URL).
 - **Login:** `/Account/Login`
 - **Register:** `/Account/Register`
 - **Logout:** POST to `/Account/Logout`
+=======
+# SMITFeeReimbursementSystem
+>>>>>>> 6f925634b43905a547dd5e9559d5203dd74baea1
