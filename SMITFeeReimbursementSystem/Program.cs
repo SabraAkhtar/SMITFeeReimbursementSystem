@@ -5,11 +5,7 @@ using SMITFeeReimbursementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database: SQLite for production, SQL Server for local dev
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
-// Database: SQLite for both local and production
+// SQLite database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=app.db"));
 
@@ -24,6 +20,13 @@ builder.Services.AddScoped<IAttendanceCalculationService, AttendanceCalculationS
 builder.Services.AddScoped<IRefundEligibilityService, RefundEligibilityService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddControllersWithViews();
+
+// PORT for Railway
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
 
 var app = builder.Build();
 
