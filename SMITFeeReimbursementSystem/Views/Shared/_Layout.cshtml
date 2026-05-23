@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SMIT Fee Reimbursement System</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SMITFeeReimbursementSystem.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <partial name="_LoadingOverlay" />
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
+            <div class="container">
+                <!-- Brand -->
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-graduation-cap me-2"></i>SMIT Fee Reimbursement
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar" aria-controls="mainNavbar"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse" id="mainNavbar">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-house me-1"></i>Home
+                            </a>
+                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                                    <i class="fa-solid fa-chart-line me-1"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Courses" asp-action="Index">
+                                    <i class="fa-solid fa-book me-1"></i>Courses
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Payments" asp-action="Index">
+                                    <i class="fa-solid fa-credit-card me-1"></i>Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Attendance" asp-action="Index">
+                                    <i class="fa-solid fa-calendar-check me-1"></i>Attendance
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Refunds" asp-action="Index">
+                                    <i class="fa-solid fa-hand-holding-dollar me-1"></i>Refunds
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Teacher"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Attendance" asp-action="Mark">
+                                    <i class="fa-solid fa-pen me-1"></i>Mark Attendance
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Attendance" asp-action="Index">
+                                    <i class="fa-solid fa-list me-1"></i>Records
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Attendance" asp-action="MyAttendance">
+                                    <i class="fa-solid fa-calendar me-1"></i>My Attendance
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Refunds" asp-action="MyRefunds">
+                                    <i class="fa-solid fa-money-bill-wave me-1"></i>My Refunds
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Payments" asp-action="MyPayments">
+                                    <i class="fa-solid fa-wallet me-1"></i>My Payments
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Payments" asp-action="Submit">
+                                    <i class="fa-solid fa-upload me-1"></i>Submit Payment
+                                </a>
+                            </li>
+                            <!-- SMIT LMS Student Portal Link -->
+                            <li class="nav-item">
+                                <a class="nav-link lms-link" href="https://lms.saylanimit.com/login"
+                                   target="_blank" rel="noopener">
+                                    <i class="fa-solid fa-arrow-up-right-from-square me-1"></i>Student Portal
+                                </a>
+                            </li>
+                        }
+
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Profile" asp-action="Index">
+                                    <i class="fa-solid fa-user-circle me-1"></i>Profile
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            <partial name="_StatusMessage" />
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container py-3">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <span class="fw-semibold" style="color:#2ecc71;">
+                        <i class="fa-solid fa-graduation-cap me-1"></i>SMIT Fee Reimbursement System
+                    </span>
+                    <span class="ms-2 small">© 2026 — FYP Project</span>
+                </div>
+                <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                    <a href="https://lms.saylanimit.com/login" target="_blank" rel="noopener"
+                       class="btn btn-sm btn-outline-success me-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i>SMIT Student Portal
+                    </a>
+                    <a href="https://www.saylanimit.com" target="_blank" rel="noopener"
+                       class="small" style="color:#94a3b8;">saylanimit.com</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<style>
+/* LMS link special styling */
+.lms-link {
+    color: #2ecc71 !important;
+    font-weight: 600;
+    border: 1px solid rgba(46,204,113,0.4);
+    border-radius: 0.4rem;
+    padding: 0.3rem 0.7rem !important;
+    margin-left: 0.25rem;
+    transition: all 0.2s;
+}
+.lms-link:hover {
+    background: rgba(46,204,113,0.15) !important;
+    border-color: #2ecc71;
+}
+</style>

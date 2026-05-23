@@ -1,0 +1,81 @@
+@model SMITFeeReimbursementSystem.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="auth-page row justify-content-center align-items-center min-vh-75">
+    <div class="col-md-5 col-lg-4">
+        <div class="text-center mb-4">
+            <div class="auth-logo mx-auto mb-3">
+                <i class="fa-solid fa-graduation-cap fa-2x text-primary"></i>
+            </div>
+            <h3 class="fw-bold mb-1">Welcome Back</h3>
+            <p class="text-muted small">Sign in to SMIT Fee Reimbursement System</p>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <partial name="_StatusMessage" />
+                <form asp-action="Login" method="post" data-loading="true">
+                    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3 small"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold small"></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fa-solid fa-envelope text-muted small"></i>
+                            </span>
+                            <input asp-for="Email" class="form-control border-start-0 ps-0"
+                                   autocomplete="username" placeholder="your@email.com" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label asp-for="Password" class="form-label fw-semibold small"></label>
+                            <a asp-action="ForgotPassword" class="small text-muted">Forgot password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fa-solid fa-lock text-muted small"></i>
+                            </span>
+                            <input asp-for="Password" class="form-control border-start-0 ps-0"
+                                   autocomplete="current-password" placeholder="••••••••" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4 form-check">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label small"></label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <p class="text-center mt-3 small text-muted">
+            Don't have an account?
+            <a asp-action="Register" class="fw-semibold">Create one</a>
+        </p>
+    </div>
+</div>
+
+<style>
+.min-vh-75 { min-height: 75vh; }
+.auth-logo {
+    width: 64px; height: 64px;
+    background: #e0e7ff;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+}
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

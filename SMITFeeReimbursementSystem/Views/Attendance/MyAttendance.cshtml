@@ -1,0 +1,72 @@
+@model IEnumerable<SMITFeeReimbursementSystem.Services.AttendanceSummary>
+@{
+    ViewData["Title"] = "My Attendance";
+    var threshold = (decimal)ViewBag.EligibilityThreshold;
+}
+
+<h1 class="h2 text-primary mb-4">My Attendance</h1>
+
+<form method="get" class="card border-0 shadow-sm mb-4">
+    <div class="card-body row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">Course</label>
+            <select name="courseId" class="form-select" asp-items="ViewBag.CourseId">
+                <option value="">All enrolled courses</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Year</label>
+            <input type="number" name="year" value="@ViewBag.Year" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Month</label>
+            <input type="number" name="month" value="@ViewBag.Month" class="form-control" min="1" max="12" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+</form>
+
+<p class="text-muted">Report for <strong>@ViewBag.MonthName</strong>. Refund eligibility requires <strong>≥@threshold%</strong> attendance.</p>
+
+<div class="row g-4 mb-4">
+@foreach (var s in Model)
+{
+    var eligible = s.AttendancePercentage >= threshold;
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <h5 class="card-title mb-0">@s.CourseName</h5>
+                    @if (eligible)
+                    {
+                        <span class="badge bg-success">Eligible for refund</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Not eligible</span>
+                    }
+                </div>
+                <div class="progress mb-3" style="height: 12px;">
+                    <div class="progress-bar @(eligible ? "bg-success" : "bg-warning")" style="width: @s.AttendancePercentage%"></div>
+                </div>
+                <p class="display-6 fw-bold text-primary mb-2">@s.AttendancePercentage%</p>
+                <div class="row text-center small">
+                    <div class="col"><span class="text-success fw-semibold">@s.PresentDays</span><br />Present</div>
+                    <div class="col"><span class="text-danger fw-semibold">@s.AbsentDays</span><br />Absent</div>
+                    <div class="col"><span class="text-info fw-semibold">@s.LeaveDays</span><br />Leave</div>
+                    <div class="col"><span class="fw-semibold">@s.TotalDays</span><br />Total</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No attendance data for the selected period.</div>
+}
+
+<a asp-controller="Refunds" asp-action="MyRefunds" class="btn btn-outline-primary">View My Refund Status</a>

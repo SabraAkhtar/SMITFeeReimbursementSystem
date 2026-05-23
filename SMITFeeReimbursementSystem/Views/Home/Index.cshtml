@@ -1,0 +1,339 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@if (!User.Identity?.IsAuthenticated ?? true)
+{
+    <!-- Hero Section -->
+    <div class="hero-section text-center py-5 mb-5">
+        <div class="hero-badge mb-3">
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                <i class="fa-solid fa-star me-1"></i> SMIT Academy — FYP Project
+            </span>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">
+            Fee Reimbursement<br />
+            <span class="text-gradient">Management System</span>
+        </h1>
+        <p class="lead text-muted mb-4 col-lg-7 mx-auto">
+            A complete academy management platform. Students pay course fees, attend classes,
+            and earn automatic fee reimbursement when attendance reaches <strong>80%</strong>.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a class="btn btn-primary btn-lg px-4" asp-controller="Account" asp-action="Login">
+                <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
+            </a>
+            <a class="btn btn-outline-primary btn-lg px-4" asp-controller="Account" asp-action="Register">
+                <i class="fa-solid fa-user-plus me-2"></i>Create Account
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row g-3 mb-5 text-center">
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 py-3">
+                <div class="fs-2 fw-bold text-primary">3,000</div>
+                <div class="text-muted small">PKR Course Fee</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 py-3">
+                <div class="fs-2 fw-bold text-success">80%</div>
+                <div class="text-muted small">Attendance for Refund</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 py-3">
+                <div class="fs-2 fw-bold text-info">3</div>
+                <div class="text-muted small">User Roles</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100 py-3">
+                <div class="fs-2 fw-bold text-warning">PDF</div>
+                <div class="text-muted small">Auto Receipts</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Role Cards -->
+    <h2 class="text-center fw-bold mb-4">Who Uses This System?</h2>
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 role-card">
+                <div class="card-body p-4">
+                    <div class="role-icon bg-primary-subtle mb-3">
+                        <i class="fa-solid fa-user-shield fa-xl text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">Admin</h5>
+                    <p class="text-muted small mb-3">Full system control with analytics dashboard.</p>
+                    <ul class="list-unstyled small text-muted">
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Manage students & courses</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Approve/reject payments</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Process refund requests</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Generate PDF receipts</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>View charts & reports</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 role-card">
+                <div class="card-body p-4">
+                    <div class="role-icon bg-info-subtle mb-3">
+                        <i class="fa-solid fa-chalkboard-user fa-xl text-info"></i>
+                    </div>
+                    <h5 class="fw-bold">Teacher</h5>
+                    <p class="text-muted small mb-3">Mark and manage student attendance.</p>
+                    <ul class="list-unstyled small text-muted">
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Mark daily attendance</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>View attendance records</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Monthly reports</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Course-wise tracking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 role-card">
+                <div class="card-body p-4">
+                    <div class="role-icon bg-success-subtle mb-3">
+                        <i class="fa-solid fa-user-graduate fa-xl text-success"></i>
+                    </div>
+                    <h5 class="fw-bold">Student</h5>
+                    <p class="text-muted small mb-3">Submit fees and track your reimbursement.</p>
+                    <ul class="list-unstyled small text-muted">
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Submit fee payment</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>View attendance %</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Track refund status</li>
+                        <li><i class="fa-solid fa-check text-success me-2"></i>Download PDF receipts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="card border-0 bg-light mb-5">
+        <div class="card-body p-4 p-md-5">
+            <h2 class="text-center fw-bold mb-4">How It Works</h2>
+            <div class="row g-4 text-center">
+                <div class="col-md-3">
+                    <div class="step-circle mx-auto mb-3">1</div>
+                    <h6 class="fw-bold">Register</h6>
+                    <p class="text-muted small">Create your account and get enrolled in a course.</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="step-circle mx-auto mb-3">2</div>
+                    <h6 class="fw-bold">Pay Fee</h6>
+                    <p class="text-muted small">Submit Rs. 3,000 fee with payment screenshot.</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="step-circle mx-auto mb-3">3</div>
+                    <h6 class="fw-bold">Attend Classes</h6>
+                    <p class="text-muted small">Maintain 80%+ attendance throughout the course.</p>
+                </div>
+                <div class="col-md-3">
+                    <div class="step-circle mx-auto mb-3">4</div>
+                    <h6 class="fw-bold">Get Refund</h6>
+                    <p class="text-muted small">Automatically become eligible for fee reimbursement.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm text-white" style="background:var(--smit-navy);">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="fa-solid fa-circle-check fa-2x" style="color:#2ecc71;"></i>
+                        <div>
+                            <h5 class="mb-1">Welcome back, @User.Identity?.Name!</h5>
+                            <p class="mb-0 opacity-75 small">Use the navigation menu to access your features.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* ===== REJECTION ALERT on Home Page ===== *@
+        @if (User.IsInRole("Student"))
+        {
+            var rejected = ViewBag.RejectedPayments as List<SMITFeeReimbursementSystem.Models.Payment>;
+            if (rejected != null && rejected.Any())
+            {
+                <div class="col-12">
+                    <div class="alert border-0 p-0 overflow-hidden shadow-sm" style="border-radius:0.75rem;">
+                        <div class="p-3 text-white d-flex align-items-center gap-3" style="background:#dc3545;">
+                            <i class="fa-solid fa-triangle-exclamation fa-2x flex-shrink-0"></i>
+                            <div>
+                                <div class="fw-bold fs-6">⚠️ Aapki Payment Reject Ho Gayi Hai!</div>
+                                <div class="small opacity-90">Admin ne aapki fee payment reject kar di hai. Neeche reason dekhen aur dobara submit karen.</div>
+                            </div>
+                        </div>
+                        @foreach (var rp in rejected)
+                        {
+                            <div class="p-3 bg-danger-subtle border-top">
+                                <div class="row align-items-center g-2">
+                                    <div class="col-md-8">
+                                        <div class="fw-semibold text-danger">
+                                            <i class="fa-solid fa-xmark-circle me-1"></i>
+                                            @rp.Course?.CourseName — Rs. @rp.Amount.ToString("N0")
+                                        </div>
+                                        @if (!string.IsNullOrWhiteSpace(rp.AdminRemarks))
+                                        {
+                                            <div class="mt-1 small p-2 bg-white rounded border border-danger-subtle">
+                                                <strong><i class="fa-solid fa-comment-dots me-1 text-danger"></i>Reason:</strong>
+                                                @rp.AdminRemarks
+                                            </div>
+                                        }
+                                        <div class="small text-muted mt-1">
+                                            Rejected: @(rp.ReviewedAt?.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt") ?? "—")
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-md-end">
+                                        <a asp-controller="Payments" asp-action="Submit" class="btn btn-danger btn-sm">
+                                            <i class="fa-solid fa-rotate-right me-1"></i>Resubmit Payment
+                                        </a>
+                                        <a asp-controller="Payments" asp-action="MyPayments" class="btn btn-outline-secondary btn-sm mt-1">
+                                            View All Payments
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="col-md-4">
+                <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-chart-line fa-2x text-primary mb-3"></i>
+                            <h6 class="fw-bold">Dashboard</h6>
+                            <p class="text-muted small mb-0">View analytics and statistics</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a asp-controller="Payments" asp-action="Index" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-credit-card fa-2x text-warning mb-3"></i>
+                            <h6 class="fw-bold">Payments</h6>
+                            <p class="text-muted small mb-0">Review pending payments</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a asp-controller="Refunds" asp-action="Index" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-hand-holding-dollar fa-2x text-success mb-3"></i>
+                            <h6 class="fw-bold">Refunds</h6>
+                            <p class="text-muted small mb-0">Process refund requests</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (User.IsInRole("Student"))
+        {
+            <div class="col-md-4">
+                <a asp-controller="Payments" asp-action="Submit" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-upload fa-2x text-primary mb-3"></i>
+                            <h6 class="fw-bold">Submit Payment</h6>
+                            <p class="text-muted small mb-0">Upload your fee payment</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a asp-controller="Attendance" asp-action="MyAttendance" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-calendar-check fa-2x text-info mb-3"></i>
+                            <h6 class="fw-bold">My Attendance</h6>
+                            <p class="text-muted small mb-0">Check your attendance %</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a asp-controller="Refunds" asp-action="MyRefunds" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-money-bill-wave fa-2x text-success mb-3"></i>
+                            <h6 class="fw-bold">My Refunds</h6>
+                            <p class="text-muted small mb-0">Track refund eligibility</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        @if (User.IsInRole("Teacher"))
+        {
+            <div class="col-md-6">
+                <a asp-controller="Attendance" asp-action="Mark" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-pen fa-2x text-primary mb-3"></i>
+                            <h6 class="fw-bold">Mark Attendance</h6>
+                            <p class="text-muted small mb-0">Record today's attendance</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a asp-controller="Attendance" asp-action="MonthlyReport" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm h-100 quick-link-card">
+                        <div class="card-body p-4 text-center">
+                            <i class="fa-solid fa-chart-bar fa-2x text-info mb-3"></i>
+                            <h6 class="fw-bold">Monthly Report</h6>
+                            <p class="text-muted small mb-0">View attendance reports</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}
+
+<style>
+.text-gradient {
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.role-icon {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+}
+.role-card { transition: transform 0.2s, box-shadow 0.2s; }
+.role-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important; }
+.step-circle {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #0d6efd, #6610f2);
+    color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 1.1rem;
+}
+.quick-link-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+.quick-link-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important; }
+.bg-primary-subtle { background-color: #e0e7ff; }
+.bg-info-subtle { background-color: #e0f2fe; }
+.bg-success-subtle { background-color: #dcfce7; }
+</style>

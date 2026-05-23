@@ -1,0 +1,202 @@
+/* =============================================
+   SMIT Admin Dashboard — SMIT Brand Colors
+   ============================================= */
+
+:root {
+    --admin-sidebar-width: 260px;
+    --admin-sidebar-bg:    #0f1923;   /* SMIT dark navy */
+    --admin-sidebar-hover: #1a2332;
+    --admin-accent:        #2ecc71;   /* SMIT green */
+    --admin-accent-dark:   #27ae60;
+}
+
+/* ---- Wrapper ---- */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ---- Sidebar ---- */
+.admin-sidebar {
+    width: var(--admin-sidebar-width);
+    background: var(--admin-sidebar-bg);
+    color: #e2e8f0;
+    flex-shrink: 0;
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    z-index: 1040;
+    overflow-y: auto;
+    transition: transform 0.25s ease;
+    border-right: 1px solid #1a2332;
+}
+
+.admin-sidebar-brand {
+    padding: 1.25rem 1.5rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-bottom: 2px solid var(--admin-accent);
+    color: var(--admin-accent);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.01em;
+}
+
+.admin-sidebar .nav-link {
+    color: #94a3b8;
+    padding: 0.7rem 1.5rem;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+}
+
+.admin-sidebar .nav-link:hover {
+    background: var(--admin-sidebar-hover);
+    color: #e2e8f0;
+    border-left-color: var(--admin-accent);
+}
+
+.admin-sidebar .nav-link.active {
+    background: rgba(46, 204, 113, 0.12);
+    color: var(--admin-accent);
+    border-left-color: var(--admin-accent);
+    font-weight: 600;
+}
+
+.admin-sidebar hr {
+    border-color: #1a2332 !important;
+    margin: 0.5rem 1rem;
+}
+
+/* ---- Main area ---- */
+.admin-main {
+    flex: 1;
+    margin-left: var(--admin-sidebar-width);
+    background: #f4f7f6;
+    min-height: 100vh;
+}
+
+/* ---- Topbar ---- */
+.admin-topbar {
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.admin-topbar h1 {
+    color: #0f1923;
+}
+
+/* ---- Content ---- */
+.admin-content {
+    padding: 1.5rem;
+}
+
+/* ---- Stat Cards ---- */
+.stat-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    background: #fff;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+.stat-card .stat-value {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.stat-card .stat-label {
+    color: #64748b;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Override border-start colors for stat cards */
+.stat-card.border-start.border-primary { border-left-color: #2ecc71 !important; }
+
+/* ---- Chart Cards ---- */
+.chart-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    background: #fff;
+}
+
+/* ---- Activity Cards ---- */
+.activity-card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    background: #fff;
+}
+.activity-card .list-group-item {
+    border-left: none;
+    border-right: none;
+    padding: 0.75rem 1rem;
+    transition: background 0.15s;
+}
+.activity-card .list-group-item:hover {
+    background: #f0fdf4;
+}
+
+/* ---- Stat icon ---- */
+.stat-icon {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ---- Color utilities ---- */
+.bg-primary-subtle  { background-color: #d4f5e2; }
+.bg-info-subtle     { background-color: #e0f2fe; }
+.bg-success-subtle  { background-color: #d4f5e2; }
+.bg-danger-subtle   { background-color: #fee2e2; }
+.bg-warning-subtle  { background-color: #fff8e1; }
+.bg-secondary-subtle{ background-color: #f1f5f9; }
+
+/* ---- Sidebar toggle (mobile) ---- */
+.admin-sidebar-toggle { display: none; }
+
+@media (max-width: 991.98px) {
+    .admin-sidebar {
+        transform: translateX(-100%);
+    }
+    .admin-sidebar.show {
+        transform: translateX(0);
+    }
+    .admin-main {
+        margin-left: 0;
+    }
+    .admin-sidebar-toggle {
+        display: inline-block;
+    }
+    .admin-sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 1035;
+    }
+    .admin-sidebar-backdrop.show {
+        display: block;
+    }
+}

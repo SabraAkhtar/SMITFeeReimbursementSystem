@@ -1,0 +1,93 @@
+@model IEnumerable<SMITFeeReimbursementSystem.Services.AttendanceSummary>
+@{
+    ViewData["Title"] = "Monthly Attendance Report";
+    var threshold = SMITFeeReimbursementSystem.Models.Refund.EligibilityThreshold;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 text-primary mb-0">Monthly Attendance Report</h1>
+        <p class="text-muted mb-0">@ViewBag.MonthName · Formula: (Present / Total) × 100</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+</div>
+
+<form method="get" class="card border-0 shadow-sm mb-4">
+    <div class="card-body row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">Course</label>
+            <select name="courseId" class="form-select" asp-items="ViewBag.CourseId">
+                <option value="">-- Select course --</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Year</label>
+            <input type="number" name="year" value="@ViewBag.Year" class="form-control" min="2020" max="2100" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Month</label>
+            <input type="number" name="month" value="@ViewBag.Month" class="form-control" min="1" max="12" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Generate</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Any())
+{
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Present</th>
+                        <th>Absent</th>
+                        <th>Leave</th>
+                        <th>Total</th>
+                        <th>Attendance %</th>
+                        <th>Refund Eligible</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var s in Model)
+                {
+                    var eligible = s.AttendancePercentage >= threshold;
+                    <tr>
+                        <td>@s.StudentName</td>
+                        <td>@s.CourseName</td>
+                        <td>@s.PresentDays</td>
+                        <td>@s.AbsentDays</td>
+                        <td>@s.LeaveDays</td>
+                        <td>@s.TotalDays</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="progress flex-grow-1" style="height: 8px; min-width: 80px;">
+                                    <div class="progress-bar @(eligible ? "bg-success" : "bg-warning")" style="width: @s.AttendancePercentage%"></div>
+                                </div>
+                                <strong>@s.AttendancePercentage%</strong>
+                            </div>
+                        </td>
+                        <td>
+                            @if (eligible)
+                            {
+                                <span class="badge bg-success">Yes (≥@threshold%)</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">No</span>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">Select a course and month to generate the report.</div>
+}

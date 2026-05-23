@@ -1,0 +1,231 @@
+/* =============================================
+   SMIT Fee Reimbursement System
+   Colors inspired by saylanimit.com
+   Primary Green: #2ecc71 / #27ae60
+   Dark Navy:     #0f1923 / #1a2332
+   ============================================= */
+
+:root {
+    --smit-green:       #2ecc71;
+    --smit-green-dark:  #27ae60;
+    --smit-green-light: #d4f5e2;
+    --smit-navy:        #0f1923;
+    --smit-navy-2:      #1a2332;
+    --smit-navy-3:      #243447;
+    --body-bg:          #f4f7f6;
+    --card-radius:      0.75rem;
+    --transition:       0.2s ease;
+
+    /* Override Bootstrap primary with SMIT green */
+    --bs-primary:       #2ecc71;
+    --bs-primary-rgb:   46, 204, 113;
+    --bs-link-color:    #27ae60;
+}
+
+html {
+    font-size: 14px;
+    scroll-behavior: smooth;
+}
+@media (min-width: 768px) {
+    html { font-size: 16px; }
+}
+
+body {
+    background-color: var(--body-bg);
+    color: #1a2332;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* ---- Navbar (SMIT dark navy) ---- */
+.navbar.bg-primary,
+.navbar.navbar-dark.bg-primary {
+    background-color: var(--smit-navy) !important;
+    border-bottom: 3px solid var(--smit-green) !important;
+}
+
+.navbar-brand {
+    color: var(--smit-green) !important;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.navbar .nav-link {
+    color: #cbd5e1 !important;
+    transition: color var(--transition);
+}
+.navbar .nav-link:hover {
+    color: var(--smit-green) !important;
+}
+
+/* ---- Buttons ---- */
+.btn-primary {
+    background-color: var(--smit-green) !important;
+    border-color: var(--smit-green) !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all var(--transition);
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--smit-green-dark) !important;
+    border-color: var(--smit-green-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(46,204,113,0.35) !important;
+}
+
+.btn-outline-primary {
+    color: var(--smit-green) !important;
+    border-color: var(--smit-green) !important;
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+.btn-outline-primary:hover {
+    background-color: var(--smit-green) !important;
+    color: #fff !important;
+}
+
+.btn-outline-secondary {
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+/* ---- Cards ---- */
+.card {
+    border-radius: var(--card-radius);
+    border: 1px solid #e2e8f0;
+}
+.card-header {
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.9rem;
+}
+
+/* ---- Tables ---- */
+.table > :not(caption) > * > * {
+    padding: 0.85rem 0.75rem;
+    vertical-align: middle;
+}
+.table-hover tbody tr:hover {
+    background-color: #f0fdf4;
+}
+
+/* ---- Forms ---- */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border-color: #d1d5db;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-control:focus, .form-select:focus {
+    border-color: var(--smit-green);
+    box-shadow: 0 0 0 3px rgba(46,204,113,0.18);
+}
+.input-group .form-control:focus { z-index: 3; }
+
+/* ---- Alerts ---- */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* ---- Badges ---- */
+.badge { font-weight: 500; letter-spacing: 0.02em; }
+
+/* ---- Links ---- */
+a { color: var(--smit-green-dark); }
+a:hover { color: var(--smit-green); }
+
+/* ---- Loading Overlay ---- */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 25, 35, 0.7);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+.loading-overlay.show { display: flex !important; }
+
+/* ---- Spinner color ---- */
+.spinner-border.text-primary { color: var(--smit-green) !important; }
+
+/* ---- Footer ---- */
+footer.footer {
+    background: var(--smit-navy);
+    border-top: 3px solid var(--smit-green);
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    color: #94a3b8;
+}
+footer.footer a { color: var(--smit-green); }
+
+/* ---- Pagination ---- */
+.pagination .page-link {
+    border-radius: 0.5rem;
+    margin: 0 2px;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.875rem;
+}
+.pagination .page-item.active .page-link {
+    background-color: var(--smit-green);
+    border-color: var(--smit-green);
+}
+
+/* ---- Toast ---- */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 11000;
+}
+
+/* ---- Code ---- */
+code {
+    background: #f0fdf4;
+    padding: 0.15em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    color: var(--smit-green-dark);
+}
+
+/* ---- Focus rings ---- */
+.btn:focus, .form-control:focus, .form-select:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(46,204,113,0.2);
+}
+
+/* ---- Smooth transitions ---- */
+.card, .btn, .nav-link, .list-group-item {
+    transition: all var(--transition);
+}
+
+/* ---- Receipt ---- */
+.receipt-document { max-width: 680px; }
+.receipt-field { display: flex; flex-direction: column; }
+.receipt-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+.receipt-value { font-size: 1rem; color: #1e293b; }
+
+/* ---- Print ---- */
+@media print {
+    .no-print { display: none !important; }
+    header, footer, nav, .navbar { display: none !important; }
+    body { background: #fff !important; }
+}
+
+/* ---- Utility ---- */
+.text-primary { color: var(--smit-green) !important; }
+.bg-primary   { background-color: var(--smit-green) !important; }
+.border-primary { border-color: var(--smit-green) !important; }
+
+.text-smit-green { color: var(--smit-green); }
+.bg-smit-navy   { background-color: var(--smit-navy); }
+.bg-green-subtle { background-color: var(--smit-green-light); }

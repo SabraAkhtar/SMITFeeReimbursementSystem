@@ -1,0 +1,121 @@
+@model IEnumerable<SMITFeeReimbursementSystem.ViewModels.StudentListItemViewModel>
+@{
+    ViewData["Title"] = "Students";
+    Layout = "_AdminLayout";
+    var currentPage = (int)(ViewBag.CurrentPage ?? 1);
+    var totalPages = (int)(ViewBag.TotalPages ?? 1);
+    var totalCount = (int)(ViewBag.TotalCount ?? 0);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <p class="text-muted mb-0">@totalCount registered student(s)</p>
+    </div>
+</div>
+
+<form method="get" class="mb-4">
+    <div class="input-group" style="max-width: 420px;">
+        <span class="input-group-text bg-white"><i class="fa-solid fa-search text-muted"></i></span>
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control border-start-0"
+               placeholder="Search name, email or roll number..." />
+        <button class="btn btn-primary" type="submit">Search</button>
+        @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+        }
+    </div>
+</form>
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Roll No.</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th class="text-center">Courses</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <i class="fa-solid fa-users fa-2x mb-2 d-block opacity-25"></i>
+                        No students found.
+                    </td>
+                </tr>
+            }
+            @{int rowNum = (currentPage - 1) * 10 + 1;}
+            @foreach (var s in Model)
+            {
+                <tr>
+                    <td class="text-muted small">@rowNum</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="avatar-sm bg-primary-subtle rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-user text-primary small"></i>
+                            </div>
+                            <strong>@s.FullName</strong>
+                        </div>
+                    </td>
+                    <td><code>@s.RollNumber</code></td>
+                    <td class="text-muted">@s.Email</td>
+                    <td class="text-muted">@(s.Phone ?? "—")</td>
+                    <td class="text-center">
+                        <span class="badge bg-primary rounded-pill">@s.EnrolledCourses</span>
+                    </td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Details" asp-route-id="@s.Id"
+                           class="btn btn-sm btn-outline-primary" title="View Details">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@s.Id"
+                           class="btn btn-sm btn-outline-secondary" title="Edit">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@s.Id"
+                           class="btn btn-sm btn-outline-danger" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                rowNum++;
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (totalPages > 1)
+{
+    <nav class="mt-4 d-flex justify-content-center">
+        <ul class="pagination">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-search="@ViewBag.Search">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+            </li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-search="@ViewBag.Search">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}
+
+<style>
+.avatar-sm { width: 32px; height: 32px; }
+.bg-primary-subtle { background-color: #e0e7ff; }
+</style>

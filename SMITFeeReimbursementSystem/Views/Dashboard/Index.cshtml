@@ -1,0 +1,344 @@
+@model SMITFeeReimbursementSystem.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+    ViewBag.AdminName = ViewBag.AdminName ?? "Administrator";
+}
+
+<div class="mb-4">
+    <h2 class="h4 text-dark mb-1">
+        <i class="fa-solid fa-gauge-high me-2 text-primary"></i>Welcome back, @ViewBag.AdminName
+    </h2>
+    <p class="text-muted mb-0">SMIT Fee Reimbursement System — overview and analytics</p>
+</div>
+
+<!-- Stats Row 1 -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-primary border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Total Students</div>
+                        <div class="stat-value text-primary">@Model.Stats.TotalStudents</div>
+                    </div>
+                    <div class="stat-icon bg-primary-subtle">
+                        <i class="fa-solid fa-user-graduate text-primary"></i>
+                    </div>
+                </div>
+                <a asp-controller="Students" asp-action="Index" class="small text-muted mt-2 d-block">View all →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-info border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Total Courses</div>
+                        <div class="stat-value text-info">@Model.Stats.TotalCourses</div>
+                    </div>
+                    <div class="stat-icon bg-info-subtle">
+                        <i class="fa-solid fa-book text-info"></i>
+                    </div>
+                </div>
+                <a asp-controller="Courses" asp-action="Index" class="small text-muted mt-2 d-block">Manage →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-dark border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Total Payments</div>
+                        <div class="stat-value text-dark">@Model.Stats.TotalPayments</div>
+                    </div>
+                    <div class="stat-icon bg-secondary-subtle">
+                        <i class="fa-solid fa-credit-card text-secondary"></i>
+                    </div>
+                </div>
+                <a asp-controller="Payments" asp-action="Index" class="small text-muted mt-2 d-block">View all →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-secondary border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Attendance Records</div>
+                        <div class="stat-value text-secondary">@Model.Stats.TotalAttendanceRecords</div>
+                    </div>
+                    <div class="stat-icon bg-secondary-subtle">
+                        <i class="fa-solid fa-calendar-check text-secondary"></i>
+                    </div>
+                </div>
+                <a asp-controller="Attendance" asp-action="Index" class="small text-muted mt-2 d-block">View all →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Row 2 -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-warning border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Pending Payments</div>
+                        <div class="stat-value text-warning">@Model.Stats.PendingPayments</div>
+                    </div>
+                    <div class="stat-icon" style="background:#fff8e1">
+                        <i class="fa-solid fa-clock text-warning"></i>
+                    </div>
+                </div>
+                <a asp-controller="Payments" asp-action="Index" asp-route-status="Pending" class="small text-muted mt-2 d-block">Review →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-success border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Approved Payments</div>
+                        <div class="stat-value text-success">@Model.Stats.ApprovedPayments</div>
+                    </div>
+                    <div class="stat-icon bg-success-subtle">
+                        <i class="fa-solid fa-circle-check text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-danger border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Rejected Payments</div>
+                        <div class="stat-value text-danger">@Model.Stats.RejectedPayments</div>
+                    </div>
+                    <div class="stat-icon bg-danger-subtle">
+                        <i class="fa-solid fa-circle-xmark text-danger"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card stat-card h-100 border-start border-success border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="stat-label">Refund Eligible</div>
+                        <div class="stat-value text-success">@Model.Stats.RefundEligibleStudents</div>
+                    </div>
+                    <div class="stat-icon bg-success-subtle">
+                        <i class="fa-solid fa-hand-holding-dollar text-success"></i>
+                    </div>
+                </div>
+                <a asp-controller="Refunds" asp-action="Eligible" class="small text-muted mt-2 d-block">View eligible →</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-4">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white fw-semibold border-0 pt-3">
+                <i class="fa-solid fa-chart-pie me-2 text-primary"></i>Payment Status
+            </div>
+            <div class="card-body pt-0">
+                <canvas id="paymentStatusChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white fw-semibold border-0 pt-3">
+                <i class="fa-solid fa-chart-bar me-2 text-info"></i>Attendance % by Course
+            </div>
+            <div class="card-body pt-0">
+                <canvas id="attendanceChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card chart-card h-100">
+            <div class="card-header bg-white fw-semibold border-0 pt-3">
+                <i class="fa-solid fa-chart-bar me-2 text-success"></i>Enrollment per Course
+            </div>
+            <div class="card-body pt-0">
+                <canvas id="enrollmentChart" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card activity-card h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center border-0 pt-3">
+                <strong><i class="fa-solid fa-credit-card me-2 text-warning"></i>Latest Payments</strong>
+                <a asp-controller="Payments" asp-action="Index" class="small text-muted">View all</a>
+            </div>
+            <div class="list-group list-group-flush">
+                @if (!Model.RecentActivity.LatestPayments.Any())
+                {
+                    <div class="list-group-item text-muted small py-3 text-center">No payments yet.</div>
+                }
+                @foreach (var p in Model.RecentActivity.LatestPayments)
+                {
+                    var badgeClass = p.Status == "Approved" ? "bg-success" : p.Status == "Rejected" ? "bg-danger" : "bg-warning text-dark";
+                    <a asp-controller="Payments" asp-action="Review" asp-route-id="@p.Id"
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="fw-semibold small">@p.StudentName</div>
+                                <div class="small text-muted">@p.CourseName · Rs. @p.Amount.ToString("N0")</div>
+                                <div class="small text-muted">@p.SubmittedAt.ToLocalTime().ToString("g")</div>
+                            </div>
+                            <span class="badge @badgeClass">@p.Status</span>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card activity-card h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center border-0 pt-3">
+                <strong><i class="fa-solid fa-user-plus me-2 text-primary"></i>Recent Enrollments</strong>
+                <a asp-controller="Students" asp-action="Index" class="small text-muted">Students</a>
+            </div>
+            <div class="list-group list-group-flush">
+                @if (!Model.RecentActivity.LatestEnrollments.Any())
+                {
+                    <div class="list-group-item text-muted small py-3 text-center">No enrollments yet.</div>
+                }
+                @foreach (var e in Model.RecentActivity.LatestEnrollments)
+                {
+                    <div class="list-group-item">
+                        <div class="fw-semibold small">@e.StudentName</div>
+                        <div class="small text-muted">@e.CourseName</div>
+                        <div class="small text-muted">@e.EnrolledAt.ToLocalTime().ToString("g")</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card activity-card h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center border-0 pt-3">
+                <strong><i class="fa-solid fa-calendar-check me-2 text-info"></i>Recent Attendance</strong>
+                <a asp-controller="Attendance" asp-action="Index" class="small text-muted">View all</a>
+            </div>
+            <div class="list-group list-group-flush">
+                @if (!Model.RecentActivity.RecentAttendance.Any())
+                {
+                    <div class="list-group-item text-muted small py-3 text-center">No attendance records yet.</div>
+                }
+                @foreach (var a in Model.RecentActivity.RecentAttendance)
+                {
+                    var badge = a.Status == "Present" ? "bg-success" : a.Status == "Leave" ? "bg-info text-dark" : "bg-danger";
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="fw-semibold small">@a.StudentName</div>
+                                <div class="small text-muted">@a.CourseName · @a.Date.ToString("dd MMM yyyy")</div>
+                            </div>
+                            <span class="badge @badge">@a.Status</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.stat-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.bg-primary-subtle { background-color: #e0e7ff; }
+.bg-info-subtle { background-color: #e0f2fe; }
+.bg-success-subtle { background-color: #dcfce7; }
+.bg-danger-subtle { background-color: #fee2e2; }
+.bg-secondary-subtle { background-color: #f1f5f9; }
+</style>
+
+@section Scripts {
+<script>
+    const chartDefaults = { responsive: true, maintainAspectRatio: false };
+
+    new Chart(document.getElementById('paymentStatusChart'), {
+        type: 'doughnut',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.PaymentStatus.Labels)),
+            datasets: [{
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.PaymentStatus.Values)),
+                backgroundColor: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.PaymentStatus.Colors)),
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            ...chartDefaults,
+            cutout: '65%',
+            plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } } }
+        }
+    });
+
+    new Chart(document.getElementById('attendanceChart'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.AttendanceByCourse.Labels)),
+            datasets: [{
+                label: 'Attendance %',
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.AttendanceByCourse.Values)),
+                backgroundColor: 'rgba(13, 110, 253, 0.8)',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            ...chartDefaults,
+            scales: {
+                y: { beginAtZero: true, max: 100, grid: { color: '#f1f5f9' } },
+                x: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    new Chart(document.getElementById('enrollmentChart'), {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.EnrollmentByCourse.Labels)),
+            datasets: [{
+                label: 'Students',
+                data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Charts.EnrollmentByCourse.Values)),
+                backgroundColor: 'rgba(32, 201, 151, 0.8)',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            ...chartDefaults,
+            indexAxis: 'y',
+            scales: {
+                x: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                y: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+</script>
+}

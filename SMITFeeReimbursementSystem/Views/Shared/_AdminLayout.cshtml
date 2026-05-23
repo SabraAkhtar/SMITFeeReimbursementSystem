@@ -1,0 +1,94 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SMIT Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+</head>
+<body>
+    <partial name="_LoadingOverlay" />
+    <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="admin-wrapper">
+        <aside class="admin-sidebar" id="adminSidebar">
+            <a class="admin-sidebar-brand" asp-controller="Dashboard" asp-action="Index">
+                <i class="fa-solid fa-graduation-cap me-2"></i>SMIT Admin
+            </a>
+            <nav class="nav flex-column py-2">
+                <a class="nav-link @(controller == "Dashboard" ? "active" : "")" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fa-solid fa-chart-line fa-fw me-2"></i> Dashboard
+                </a>
+                <a class="nav-link @(controller == "Students" ? "active" : "")" asp-controller="Students" asp-action="Index">
+                    <i class="fa-solid fa-user-graduate fa-fw me-2"></i> Students
+                </a>
+                <a class="nav-link @(controller == "Courses" ? "active" : "")" asp-controller="Courses" asp-action="Index">
+                    <i class="fa-solid fa-book fa-fw me-2"></i> Courses
+                </a>
+                <a class="nav-link @(controller == "Payments" ? "active" : "")" asp-controller="Payments" asp-action="Index">
+                    <i class="fa-solid fa-credit-card fa-fw me-2"></i> Payments
+                </a>
+                <a class="nav-link @(controller == "Attendance" ? "active" : "")" asp-controller="Attendance" asp-action="Index">
+                    <i class="fa-solid fa-calendar-check fa-fw me-2"></i> Attendance
+                </a>
+                <a class="nav-link @(controller == "Refunds" ? "active" : "")" asp-controller="Refunds" asp-action="Index">
+                    <i class="fa-solid fa-hand-holding-dollar fa-fw me-2"></i> Refunds
+                </a>
+                <hr class="border-secondary mx-3" />
+                <a class="nav-link @(controller == "Profile" ? "active" : "")" asp-controller="Profile" asp-action="Index">
+                    <i class="fa-solid fa-user-circle fa-fw me-2"></i> My Profile
+                </a>
+                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-house fa-fw me-2"></i> Public Site
+                </a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm admin-sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <h1 class="h5 mb-0 fw-semibold">@ViewData["Title"]</h1>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="text-muted small d-none d-md-inline"><i class="fa-solid fa-user-shield me-1"></i>@ViewBag.AdminName</span>
+                    <partial name="_LoginPartial" />
+                </div>
+            </header>
+            <div class="admin-content">
+                <partial name="_StatusMessage" />
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        (function () {
+            const sidebar = document.getElementById('adminSidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const toggle = document.getElementById('sidebarToggle');
+            if (!sidebar || !toggle) return;
+            toggle.addEventListener('click', function () {
+                sidebar.classList.toggle('show');
+                backdrop.classList.toggle('show');
+            });
+            backdrop?.addEventListener('click', function () {
+                sidebar.classList.remove('show');
+                backdrop.classList.remove('show');
+            });
+        })();
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

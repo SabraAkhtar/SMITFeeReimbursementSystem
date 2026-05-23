@@ -1,0 +1,70 @@
+@model IEnumerable<SMITFeeReimbursementSystem.Models.Refund>
+@using SMITFeeReimbursementSystem.Models
+@{
+    ViewData["Title"] = "My Refund Status";
+    var threshold = (decimal)ViewBag.EligibilityThreshold;
+}
+
+<h1 class="h2 text-primary mb-4">My Refund Status</h1>
+
+<p class="text-muted">Refund eligibility is calculated automatically when your attendance is <strong>≥ @threshold%</strong>.</p>
+
+<form method="get" class="mb-4">
+    <div class="input-group" style="max-width: 400px;">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by course..." />
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No refund records yet. Once your attendance reaches @threshold% or higher, a pending refund request will appear here automatically.
+    </div>
+}
+else
+{
+    <div class="row g-4">
+    @foreach (var r in Model)
+    {
+        var eligible = r.AttendancePercentage >= threshold;
+        var badge = r.RefundStatus switch
+        {
+            RefundStatus.Approved => "bg-success",
+            RefundStatus.Rejected => "bg-danger",
+            _ => "bg-warning text-dark"
+        };
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title">@r.Course.CourseName</h5>
+                        <span class="badge @badge">@r.RefundStatus</span>
+                    </div>
+                    <p class="mb-2">
+                        Attendance: <strong>@r.AttendancePercentage%</strong>
+                        @if (eligible)
+                        {
+                            <span class="badge bg-success ms-1">Eligible</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary ms-1">Below @threshold%</span>
+                        }
+                    </p>
+                    <div class="progress mb-2" style="height: 8px;">
+                        <div class="progress-bar @(eligible ? "bg-success" : "bg-warning")" style="width: @r.AttendancePercentage%"></div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(r.AdminRemarks))
+                    {
+                        <p class="small text-muted mb-0"><strong>Remarks:</strong> @r.AdminRemarks</p>
+                    }
+                    <p class="small text-muted mt-2 mb-0">Updated @r.CreatedAt.ToLocalTime().ToString("g")</p>
+                </div>
+            </div>
+        </div>
+    }
+    </div>
+}
+
+<a asp-controller="Attendance" asp-action="MyAttendance" class="btn btn-outline-primary mt-3">View My Attendance</a>

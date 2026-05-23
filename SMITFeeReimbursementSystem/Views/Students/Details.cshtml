@@ -1,0 +1,180 @@
+@model SMITFeeReimbursementSystem.ViewModels.StudentDetailsViewModel
+@using SMITFeeReimbursementSystem.Models
+@{
+    ViewData["Title"] = "Student Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-2">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Students
+        </a>
+        <h2 class="h4 mb-0">@Model.FullName</h2>
+        <span class="text-muted small">@Model.Email</span>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-pen me-1"></i> Edit
+        </a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-sm">
+            <i class="fa-solid fa-trash me-1"></i> Delete
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-4">
+                <div class="avatar-circle mx-auto mb-3">
+                    <i class="fa-solid fa-user-graduate fa-2x text-primary"></i>
+                </div>
+                <h5 class="mb-1">@Model.FullName</h5>
+                <p class="text-muted small mb-3">@Model.Email</p>
+                <div class="row g-2 text-start">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                            <i class="fa-solid fa-id-card text-primary fa-fw"></i>
+                            <div>
+                                <div class="small text-muted">Roll Number</div>
+                                <div class="fw-semibold">@Model.RollNumber</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                            <i class="fa-solid fa-phone text-success fa-fw"></i>
+                            <div>
+                                <div class="small text-muted">Phone</div>
+                                <div class="fw-semibold">@(Model.Phone ?? "—")</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center gap-2 p-2 bg-light rounded">
+                            <i class="fa-solid fa-book text-info fa-fw"></i>
+                            <div>
+                                <div class="small text-muted">Enrolled Courses</div>
+                                <div class="fw-semibold">@Model.Enrollments.Count</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">
+                <i class="fa-solid fa-book me-2 text-info"></i>Enrolled Courses
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr><th>Course</th><th>Fee</th><th>Enrolled On</th></tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Enrollments.Any())
+                    {
+                        <tr><td colspan="3" class="text-center text-muted py-3">No enrollments.</td></tr>
+                    }
+                    @foreach (var e in Model.Enrollments)
+                    {
+                        <tr>
+                            <td>@e.Course.CourseName</td>
+                            <td>Rs. @e.Course.FeeAmount.ToString("N0")</td>
+                            <td>@e.EnrolledAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white fw-semibold">
+                <i class="fa-solid fa-credit-card me-2 text-warning"></i>Payment History
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr><th>Course</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Payments.Any())
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-3">No payments.</td></tr>
+                    }
+                    @foreach (var p in Model.Payments)
+                    {
+                        var badge = p.Status switch
+                        {
+                            PaymentStatus.Approved => "bg-success",
+                            PaymentStatus.Rejected => "bg-danger",
+                            _ => "bg-warning text-dark"
+                        };
+                        <tr>
+                            <td>@p.Course.CourseName</td>
+                            <td>Rs. @p.Amount.ToString("N0")</td>
+                            <td><span class="badge @badge">@p.Status</span></td>
+                            <td>@p.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white fw-semibold">
+                <i class="fa-solid fa-hand-holding-dollar me-2 text-success"></i>Refund Status
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr><th>Course</th><th>Attendance %</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                    @if (!Model.Refunds.Any())
+                    {
+                        <tr><td colspan="3" class="text-center text-muted py-3">No refund records.</td></tr>
+                    }
+                    @foreach (var r in Model.Refunds)
+                    {
+                        var badge = r.RefundStatus switch
+                        {
+                            RefundStatus.Approved => "bg-success",
+                            RefundStatus.Rejected => "bg-danger",
+                            _ => "bg-warning text-dark"
+                        };
+                        <tr>
+                            <td>@r.Course.CourseName</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="progress flex-grow-1" style="height:6px;">
+                                        <div class="progress-bar @(r.AttendancePercentage >= 80 ? "bg-success" : "bg-warning")"
+                                             style="width:@r.AttendancePercentage%"></div>
+                                    </div>
+                                    <span class="small fw-semibold">@r.AttendancePercentage%</span>
+                                </div>
+                            </td>
+                            <td><span class="badge @badge">@r.RefundStatus</span></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar-circle {
+    width: 80px; height: 80px;
+    background: #e0e7ff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+</style>

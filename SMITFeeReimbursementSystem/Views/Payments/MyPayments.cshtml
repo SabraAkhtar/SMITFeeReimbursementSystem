@@ -1,0 +1,146 @@
+@model IEnumerable<SMITFeeReimbursementSystem.ViewModels.PaymentListItemViewModel>
+@using SMITFeeReimbursementSystem.Models
+@{
+    ViewData["Title"] = "My Payments";
+    var rejectedPayments = Model.Where(p => p.Status == PaymentStatus.Rejected).ToList();
+}
+
+<partial name="_StatusMessage" />
+
+@* ===== REJECTION ALERT — bada aur bold dikhta hai ===== *@
+@if (rejectedPayments.Any())
+{
+    <div class="alert alert-danger border-0 shadow-sm mb-4 p-0 overflow-hidden">
+        <div class="d-flex align-items-center gap-3 p-3" style="background:#dc3545;">
+            <i class="fa-solid fa-circle-xmark fa-2x text-white flex-shrink-0"></i>
+            <div class="text-white">
+                <div class="fw-bold fs-6">Payment Rejected!</div>
+                <div class="small opacity-90">Admin ne aapki payment reject kar di hai. Neeche details dekhen.</div>
+            </div>
+        </div>
+        @foreach (var rp in rejectedPayments)
+        {
+            <div class="p-3 border-top border-danger-subtle bg-danger-subtle">
+                <div class="row align-items-center g-2">
+                    <div class="col-md-8">
+                        <div class="fw-semibold text-danger">
+                            <i class="fa-solid fa-xmark me-1"></i>@rp.CourseName — Rs. @rp.Amount.ToString("N0")
+                        </div>
+                        <div class="small text-muted mt-1">
+                            Transaction: <code>@rp.TransactionId</code> &nbsp;|&nbsp;
+                            Rejected on: @rp.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy")
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(rp.AdminRemarks))
+                        {
+                            <div class="mt-2 p-2 bg-white rounded border border-danger-subtle small">
+                                <strong><i class="fa-solid fa-comment me-1 text-danger"></i>Admin Remarks:</strong>
+                                @rp.AdminRemarks
+                            </div>
+                        }
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <a asp-action="Submit" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-rotate-right me-1"></i>Resubmit Payment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 fw-bold mb-0">My Payments</h1>
+    <a class="btn btn-primary btn-sm" asp-action="Submit">
+        <i class="fa-solid fa-upload me-1"></i>Submit New Payment
+    </a>
+</div>
+
+<partial name="_PaymentFilter" />
+
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Course</th>
+                    <th>Amount</th>
+                    <th>Transaction ID</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-5">
+                        <i class="fa-solid fa-receipt fa-2x mb-2 d-block opacity-25"></i>
+                        No payments submitted yet.
+                        <div class="mt-2">
+                            <a asp-action="Submit" class="btn btn-primary btn-sm">Submit First Payment</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @foreach (var p in Model)
+            {
+                var badgeClass = p.Status switch
+                {
+                    PaymentStatus.Approved => "bg-success",
+                    PaymentStatus.Rejected => "bg-danger",
+                    _ => "bg-warning text-dark"
+                };
+                var rowClass = p.Status == PaymentStatus.Rejected ? "table-danger" : "";
+                <tr class="@rowClass">
+                    <td class="fw-semibold">@p.CourseName</td>
+                    <td>Rs. @p.Amount.ToString("N0")</td>
+                    <td><code>@p.TransactionId</code></td>
+                    <td>
+                        <span class="badge @badgeClass">
+                            @if (p.Status == PaymentStatus.Rejected)
+                            {
+                                <i class="fa-solid fa-xmark me-1"></i>
+                            }
+                            else if (p.Status == PaymentStatus.Approved)
+                            {
+                                <i class="fa-solid fa-check me-1"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-clock me-1"></i>
+                            }
+                            @p.Status
+                        </span>
+                        @if (p.Status == PaymentStatus.Rejected && !string.IsNullOrWhiteSpace(p.AdminRemarks))
+                        {
+                            <div class="small text-danger mt-1">
+                                <i class="fa-solid fa-comment me-1"></i>@p.AdminRemarks
+                            </div>
+                        }
+                    </td>
+                    <td class="text-muted small">@p.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                    <td class="text-end text-nowrap">
+                        @if (p.Status == PaymentStatus.Approved && p.ReceiptNumber is not null)
+                        {
+                            <a class="btn btn-sm btn-outline-success" asp-action="Receipt" asp-route-id="@p.Id">
+                                <i class="fa-solid fa-receipt me-1"></i>Receipt
+                            </a>
+                            <a class="btn btn-sm btn-success" asp-action="DownloadPdf" asp-route-id="@p.Id">
+                                <i class="fa-solid fa-file-pdf me-1"></i>PDF
+                            </a>
+                        }
+                        @if (p.Status == PaymentStatus.Rejected)
+                        {
+                            <a class="btn btn-sm btn-danger" asp-action="Submit">
+                                <i class="fa-solid fa-rotate-right me-1"></i>Resubmit
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+@model SMITFeeReimbursementSystem.ViewModels.MarkAttendanceViewModel
+@using SMITFeeReimbursementSystem.Models
+@{
+    ViewData["Title"] = "Mark Attendance";
+}
+
+<h1 class="h2 text-primary mb-4">Mark Daily Attendance</h1>
+
+<form method="get" class="card border-0 shadow-sm mb-4">
+    <div class="card-body row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label">Course</label>
+            <select name="courseId" class="form-select" asp-items="ViewBag.CourseId" asp-for="CourseId">
+                <option value="0">-- Select course --</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Date" class="form-label"></label>
+            <input asp-for="Date" type="date" class="form-control" name="date" />
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-outline-primary w-100">Load Students</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.CourseId > 0 && Model.Students.Any())
+{
+    <form asp-action="Mark" method="post" class="card border-0 shadow-sm">
+        <input type="hidden" asp-for="CourseId" />
+        <input type="hidden" asp-for="Date" />
+        <div class="card-header bg-white d-flex justify-content-between">
+            <strong>Students (@Model.Students.Count)</strong>
+            <span class="text-muted">@Model.Date.ToString("dddd, dd MMM yyyy")</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead class="table-light">
+                    <tr><th>Student</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                @for (var i = 0; i < Model.Students.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.Students[i].StudentName
+                            @if (Model.Students[i].HasExistingRecord)
+                            {
+                                <span class="badge bg-secondary ms-1">Update</span>
+                            }
+                            <input type="hidden" name="Students[@i].StudentId" value="@Model.Students[i].StudentId" />
+                            <input type="hidden" name="Students[@i].StudentName" value="@Model.Students[i].StudentName" />
+                            <input type="hidden" name="Students[@i].HasExistingRecord" value="@Model.Students[i].HasExistingRecord" />
+                        </td>
+                        <td>
+                            <select name="Students[@i].Status" class="form-select form-select-sm" style="max-width: 160px;">
+                                @if (Model.Students[i].Status == AttendanceStatus.Present)
+                                {
+                                    <option value="0" selected>Present</option>
+                                }
+                                else { <option value="0">Present</option> }
+                                @if (Model.Students[i].Status == AttendanceStatus.Absent)
+                                {
+                                    <option value="1" selected>Absent</option>
+                                }
+                                else { <option value="1">Absent</option> }
+                                @if (Model.Students[i].Status == AttendanceStatus.Leave)
+                                {
+                                    <option value="2" selected>Leave</option>
+                                }
+                                else { <option value="2">Leave</option> }
+                            </select>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            <button type="submit" class="btn btn-primary">Save Attendance</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+}
+else if (Model.CourseId > 0)
+{
+    <div class="alert alert-warning">No students enrolled in this course.</div>
+}

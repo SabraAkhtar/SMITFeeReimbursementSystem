@@ -1,0 +1,23 @@
+@model SMITFeeReimbursementSystem.ViewModels.CourseViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<div class="mb-3">
+    <label asp-for="CourseName" class="form-label"></label>
+    <input asp-for="CourseName" class="form-control" />
+    <span asp-validation-for="CourseName" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="FeeAmount" class="form-label"></label>
+    <input asp-for="FeeAmount" class="form-control" />
+    <span asp-validation-for="FeeAmount" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Duration" class="form-label"></label>
+    <input asp-for="Duration" class="form-control" placeholder="e.g. 3 months" />
+    <span asp-validation-for="Duration" class="text-danger"></span>
+</div>
+<div class="mb-3">
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>

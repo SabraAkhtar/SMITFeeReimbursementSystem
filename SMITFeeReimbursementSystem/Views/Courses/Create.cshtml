@@ -1,0 +1,22 @@
+@model SMITFeeReimbursementSystem.ViewModels.CourseViewModel
+@{
+    ViewData["Title"] = "Add Course";
+}
+
+<h1 class="h2 text-primary mb-4">Add Course</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post" class="card border-0 shadow-sm">
+            <div class="card-body">
+                <partial name="_CourseForm" model="Model" />
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

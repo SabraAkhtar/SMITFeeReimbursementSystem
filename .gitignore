@@ -1,0 +1,23 @@
+## .NET
+bin/
+obj/
+*.user
+.vs/
+*.suo
+*.db
+*.db-shm
+*.db-wal
+
+## Uploads (user files)
+wwwroot/uploads/payments/*
+wwwroot/uploads/receipts/*
+!wwwroot/uploads/payments/.gitkeep
+!wwwroot/uploads/receipts/.gitkeep
+
+## Secrets
+appsettings.Development.json
+secrets.json
+
+## OS
+.DS_Store
+Thumbs.db

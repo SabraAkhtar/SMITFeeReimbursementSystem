@@ -1,0 +1,48 @@
+@{
+    var currentStatus = ViewBag.Status as string ?? "";
+}
+<form method="get" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search transaction, student, or course..." />
+    </div>
+    <div class="col-md-3">
+        <select name="status" class="form-select">
+            @if (currentStatus == "")
+            {
+                <option value="" selected>All statuses</option>
+            }
+            else
+            {
+                <option value="">All statuses</option>
+            }
+            @if (currentStatus == "Pending")
+            {
+                <option value="Pending" selected>Pending</option>
+            }
+            else
+            {
+                <option value="Pending">Pending</option>
+            }
+            @if (currentStatus == "Approved")
+            {
+                <option value="Approved" selected>Approved</option>
+            }
+            else
+            {
+                <option value="Approved">Approved</option>
+            }
+            @if (currentStatus == "Rejected")
+            {
+                <option value="Rejected" selected>Rejected</option>
+            }
+            else
+            {
+                <option value="Rejected">Rejected</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-outline-primary">Filter</button>
+        <a asp-action="@ViewContext.RouteData.Values["action"]?.ToString()" class="btn btn-outline-secondary">Clear</a>
+    </div>
+</form>

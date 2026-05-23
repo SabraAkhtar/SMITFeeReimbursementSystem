@@ -1,0 +1,71 @@
+@model SMITFeeReimbursementSystem.Models.Refund
+@using SMITFeeReimbursementSystem.Models
+@{
+    ViewData["Title"] = "Review Refund";
+    var eligible = Model.AttendancePercentage >= Refund.EligibilityThreshold;
+}
+
+<partial name="_StatusMessage" />
+
+<h1 class="h2 text-primary mb-4">Review Refund #@Model.RefundId</h1>
+
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Student</dt>
+                    <dd class="col-sm-8">@(Model.Student.FullName ?? Model.Student.Email)</dd>
+                    <dt class="col-sm-4">Course</dt>
+                    <dd class="col-sm-8">@Model.Course.CourseName</dd>
+                    <dt class="col-sm-4">Attendance</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge @(eligible ? "bg-success" : "bg-danger") fs-6">@Model.AttendancePercentage%</span>
+                        (Required: ≥@Refund.EligibilityThreshold%)
+                    </dd>
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8">
+                        <span class="badge bg-secondary">@Model.RefundStatus</span>
+                    </dd>
+                    @if (!string.IsNullOrEmpty(Model.AdminRemarks))
+                    {
+                        <dt class="col-sm-4">Remarks</dt>
+                        <dd class="col-sm-8">@Model.AdminRemarks</dd>
+                    }
+                </dl>
+            </div>
+        </div>
+
+        @if (Model.RefundStatus == RefundStatus.Pending)
+        {
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-white"><strong>Admin decision</strong></div>
+                <div class="card-body">
+                    @if (eligible)
+                    {
+                        <form asp-action="Approve" method="post" class="mb-3">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.RefundId" />
+                            <label class="form-label">Remarks (optional)</label>
+                            <textarea name="adminRemarks" class="form-control mb-2" rows="2"></textarea>
+                            <button type="submit" class="btn btn-success">Approve Refund</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Student does not meet the @Refund.EligibilityThreshold% attendance requirement.</div>
+                    }
+                    <form asp-action="Reject" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.RefundId" />
+                        <label class="form-label">Rejection remarks</label>
+                        <textarea name="adminRemarks" class="form-control mb-2" rows="2"></textarea>
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-outline-secondary mt-3">Back</a>
