@@ -15,8 +15,6 @@ public class DataSeedService(
     {
         if (context.Database.IsSqlite())
         {
-            // Fresh start — delete and recreate database to clear all old data
-            await context.Database.EnsureDeletedAsync();
             await context.Database.EnsureCreatedAsync();
         }
         else
