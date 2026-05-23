@@ -13,7 +13,7 @@ public class DataSeedService(
 {
     public async Task SeedAsync()
     {
-        await context.Database.MigrateAsync();
+        await context.Database.EnsureCreatedAsync();
         await SeedRolesAsync();
         await SeedCoursesAsync();
         await SeedAdminAsync();

@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-// Database: SQL Server everywhere
+// Database: SQLite for both local and production
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite("Data Source=app.db"));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddApplicationIdentity();
