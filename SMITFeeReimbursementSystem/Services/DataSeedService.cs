@@ -8,21 +8,57 @@ namespace SMITFeeReimbursementSystem.Services;
 public class DataSeedService(
     ApplicationDbContext context,
     RoleManager<IdentityRole> roleManager,
+    UserManager<ApplicationUser> userManager,
     ILogger<DataSeedService> logger) : IDataSeedService
 {
     public async Task SeedAsync()
     {
-        // For SQLite (production): use EnsureCreated, for SQL Server: use MigrateAsync
         if (context.Database.IsSqlite())
-        {
             await context.Database.EnsureCreatedAsync();
+        else
+            await context.Database.MigrateAsync();
+
+        await SeedRolesAsync();
+        await SeedCoursesAsync();
+        await SeedAdminAsync();
+    }
+
+    private async Task SeedAdminAsync()
+    {
+        const string adminEmail = "subrahkhan3@gmail.com";
+        const string adminPassword = "SubraAkhtar12345";
+
+        var existing = await userManager.FindByEmailAsync(adminEmail);
+        if (existing is not null)
+        {
+            // Make sure this user is Admin
+            if (!await userManager.IsInRoleAsync(existing, AppRoles.Admin))
+            {
+                await userManager.AddToRoleAsync(existing, AppRoles.Admin);
+                logger.LogInformation("Admin role assigned to existing user '{Email}'.", adminEmail);
+            }
+            return;
+        }
+
+        var admin = new ApplicationUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true,
+            FullName = "Sabra Akhtar"
+        };
+
+        var result = await userManager.CreateAsync(admin, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(admin, AppRoles.Admin);
+            logger.LogInformation("Default admin account created: {Email}", adminEmail);
         }
         else
         {
-            await context.Database.MigrateAsync();
+            logger.LogWarning("Failed to create admin: {Errors}",
+                string.Join(", ", result.Errors.Select(e => e.Description)));
         }
-        await SeedRolesAsync();
-        await SeedCoursesAsync();
     }
 
     private async Task SeedRolesAsync()
