@@ -13,15 +13,7 @@ public class DataSeedService(
 {
     public async Task SeedAsync()
     {
-        if (context.Database.IsSqlite())
-        {
-            await context.Database.EnsureCreatedAsync();
-        }
-        else
-        {
-            await context.Database.MigrateAsync();
-        }
-
+        await context.Database.MigrateAsync();
         await SeedRolesAsync();
         await SeedCoursesAsync();
         await SeedAdminAsync();
