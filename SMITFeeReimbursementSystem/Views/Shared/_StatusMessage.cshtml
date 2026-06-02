@@ -1,7 +1,25 @@
 @if (TempData["StatusMessage"] is string message)
 {
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @message
+    var isError   = message.StartsWith("Error:", StringComparison.OrdinalIgnoreCase);
+    var isWarning = message.StartsWith("Warning:", StringComparison.OrdinalIgnoreCase);
+    var alertClass = isError ? "alert-danger" : isWarning ? "alert-warning" : "alert-success";
+    var iconClass  = isError ? "fa-circle-xmark" : isWarning ? "fa-triangle-exclamation" : "fa-circle-check";
+    <div class="alert @alertClass alert-dismissible fade show" role="alert">
+        <i class="fa-solid @iconClass me-2"></i>@message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["ErrorMessage"] is string errorMsg)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-circle-xmark me-2"></i>@errorMsg
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["WarningMessage"] is string warnMsg)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-triangle-exclamation me-2"></i>@warnMsg
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }

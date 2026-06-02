@@ -1,20 +1,70 @@
 @model SMITFeeReimbursementSystem.Models.Course
 @{
     ViewData["Title"] = "Delete Course";
+    Layout = "_AdminLayout";
 }
 
-<h1 class="h2 text-danger mb-4">Delete Course</h1>
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 class="mb-0" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#ef4444;">Delete Course</h2>
+        <p class="text-muted mb-0" style="font-size:0.875rem;">This action cannot be undone</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left me-1"></i>Back to Courses
+    </a>
+</div>
 
-<div class="alert alert-warning">Are you sure you want to delete <strong>@Model.CourseName</strong>? Enrollments and related data may be affected.</div>
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card admin-table-card mb-4" style="border-left:4px solid #ef4444;">
+            <div class="card-header" style="padding:1rem 1.25rem;">
+                <div class="d-flex align-items-center gap-2">
+                    <div style="width:32px;height:32px;border-radius:8px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;">
+                        <i class="fa-solid fa-trash" style="color:#ef4444;font-size:0.85rem;"></i>
+                    </div>
+                    <span style="font-weight:700;color:#ef4444;">@Model.CourseName</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-danger mb-4">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    <strong>Warning:</strong> Deleting this course will remove all associated enrollments. If any payments or attendance records exist, deletion may fail.
+                </div>
 
-<dl class="row">
-    <dt class="col-sm-3">Fee</dt><dd class="col-sm-9">Rs. @Model.FeeAmount.ToString("N0")</dd>
-    <dt class="col-sm-3">Duration</dt><dd class="col-sm-9">@Model.Duration</dd>
-</dl>
+                <dl class="row mb-4">
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Course Name</dt>
+                    <dd class="col-sm-8 fw-600" style="font-weight:600;">@Model.CourseName</dd>
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-</form>
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Fee Amount</dt>
+                    <dd class="col-sm-8">
+                        <span style="color:#2ecc71;font-weight:700;">Rs. @Model.FeeAmount.ToString("N0")</span>
+                    </dd>
+
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Duration</dt>
+                    <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Duration) ? "—" : Model.Duration)</dd>
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Description</dt>
+                        <dd class="col-sm-8 text-muted">@Model.Description</dd>
+                    }
+                </dl>
+
+                <form asp-action="Delete" method="post" data-loading="true">
+                    <input type="hidden" asp-for="Id" />
+                    @Html.AntiForgeryToken()
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-danger"
+                                data-confirm="Are you sure you want to delete @Model.CourseName? This cannot be undone.">
+                            <i class="fa-solid fa-trash me-2"></i>Yes, Delete Course
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fa-solid fa-xmark me-1"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,47 +1,93 @@
 @model SMITFeeReimbursementSystem.Models.Course
 @{
     ViewData["Title"] = Model.CourseName;
+    Layout = "_AdminLayout";
 }
 
 <partial name="_StatusMessage" />
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
     <div>
-        <h1 class="h2 text-primary">@Model.CourseName</h1>
-        <p class="text-muted mb-0">@Model.Duration · Rs. @Model.FeeAmount.ToString("N0")</p>
+        <h2 class="mb-0" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#0f1923;">@Model.CourseName</h2>
+        <p class="text-muted mb-0" style="font-size:0.875rem;">
+            <span class="badge me-1" style="background:rgba(46,204,113,0.1);color:#2ecc71;font-size:0.75rem;">Rs. @Model.FeeAmount.ToString("N0")</span>
+            @if (!string.IsNullOrEmpty(Model.Duration))
+            {
+                <span class="badge" style="background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.75rem;">@Model.Duration</span>
+            }
+        </p>
     </div>
-    <div>
-        <a class="btn btn-success" asp-action="AssignStudents" asp-route-id="@Model.Id">Assign Students</a>
-        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-        <a class="btn btn-outline-primary" asp-action="Index">Back</a>
+    <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-primary" asp-action="AssignStudents" asp-route-id="@Model.Id">
+            <i class="fa-solid fa-user-plus me-2"></i>Assign Students
+        </a>
+        <a class="btn btn-outline-secondary" asp-action="Edit" asp-route-id="@Model.Id">
+            <i class="fa-solid fa-pen me-1"></i>Edit
+        </a>
+        <a class="btn btn-outline-secondary" asp-action="Index">
+            <i class="fa-solid fa-arrow-left me-1"></i>Back
+        </a>
     </div>
 </div>
 
-<div class="card border-0 shadow-sm mb-4">
-    <div class="card-body">
-        <h5>Description</h5>
-        <p class="mb-0">@(string.IsNullOrEmpty(Model.Description) ? "No description." : Model.Description)</p>
+@if (!string.IsNullOrEmpty(Model.Description))
+{
+    <div class="card admin-table-card mb-4">
+        <div class="card-header" style="padding:1rem 1.25rem;">
+            <i class="fa-solid fa-info-circle me-2" style="color:#3b82f6;"></i>
+            <span style="font-weight:700;">Description</span>
+        </div>
+        <div class="card-body p-4">
+            <p class="mb-0 text-muted">@Model.Description</p>
+        </div>
     </div>
-</div>
+}
 
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white"><strong>Enrolled Students (@Model.Enrollments.Count)</strong></div>
+<div class="card admin-table-card">
+    <div class="card-header d-flex justify-content-between align-items-center" style="padding:1rem 1.25rem;">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-user-graduate" style="color:#2ecc71;"></i>
+            <span style="font-weight:700;">Enrolled Students</span>
+        </div>
+        <span class="badge" style="background:rgba(46,204,113,0.1);color:#2ecc71;border:1px solid rgba(46,204,113,0.2);">
+            @Model.Enrollments.Count student(s)
+        </span>
+    </div>
     <div class="table-responsive">
-        <table class="table mb-0">
-            <thead class="table-light">
-                <tr><th>Name</th><th>Email</th><th>Enrolled</th></tr>
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Enrolled At</th>
+                </tr>
             </thead>
             <tbody>
             @if (!Model.Enrollments.Any())
             {
-                <tr><td colspan="3" class="text-muted text-center py-3">No students assigned yet.</td></tr>
+                <tr>
+                    <td colspan="3" class="text-center py-5">
+                        <div style="color:#94a3b8;">
+                            <i class="fa-solid fa-user-slash fa-2x mb-3 d-block" style="opacity:0.3;"></i>
+                            <p class="mb-0">No students enrolled yet.</p>
+                        </div>
+                    </td>
+                </tr>
             }
             @foreach (var e in Model.Enrollments.OrderBy(x => x.Student.FullName))
             {
                 <tr>
-                    <td>@(e.Student.FullName ?? "—")</td>
-                    <td>@e.Student.Email</td>
-                    <td>@e.EnrolledAt.ToLocalTime().ToString("g")</td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width:32px;height:32px;border-radius:50%;background:rgba(46,204,113,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fa-solid fa-user fa-xs" style="color:#2ecc71;"></i>
+                            </div>
+                            <span class="fw-500" style="font-weight:500;">@(e.Student.FullName ?? "—")</span>
+                        </div>
+                    </td>
+                    <td class="text-muted" style="font-size:0.875rem;">@e.Student.Email</td>
+                    <td class="text-muted" style="font-size:0.8rem;">@e.EnrolledAt.ToLocalTime().ToString("g")</td>
                 </tr>
             }
             </tbody>

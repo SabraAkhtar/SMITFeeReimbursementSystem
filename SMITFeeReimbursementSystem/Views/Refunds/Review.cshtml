@@ -2,35 +2,76 @@
 @using SMITFeeReimbursementSystem.Models
 @{
     ViewData["Title"] = "Review Refund";
+    Layout = "_AdminLayout";
     var eligible = Model.AttendancePercentage >= Refund.EligibilityThreshold;
 }
 
 <partial name="_StatusMessage" />
 
-<h1 class="h2 text-primary mb-4">Review Refund #@Model.RefundId</h1>
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 class="mb-0" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#0f1923;">
+            Review Refund #@Model.RefundId
+        </h2>
+        <p class="text-muted mb-0" style="font-size:0.875rem;">Process refund request for student</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left me-1"></i>All Refunds
+    </a>
+</div>
 
 <div class="row g-4">
-    <div class="col-md-7">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
+    <div class="col-lg-7">
+        <!-- Refund Details -->
+        <div class="card admin-table-card mb-4">
+            <div class="card-header" style="padding:1rem 1.25rem;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-hand-holding-dollar" style="color:#2ecc71;"></i>
+                    <span style="font-weight:700;">Refund Details</span>
+                </div>
+            </div>
+            <div class="card-body p-4">
                 <dl class="row mb-0">
-                    <dt class="col-sm-4">Student</dt>
-                    <dd class="col-sm-8">@(Model.Student.FullName ?? Model.Student.Email)</dd>
-                    <dt class="col-sm-4">Course</dt>
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Student</dt>
+                    <dd class="col-sm-8 fw-600" style="font-weight:600;">@(Model.Student.FullName ?? Model.Student.Email)</dd>
+
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Email</dt>
+                    <dd class="col-sm-8 text-muted">@Model.Student.Email</dd>
+
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Course</dt>
                     <dd class="col-sm-8">@Model.Course.CourseName</dd>
-                    <dt class="col-sm-4">Attendance</dt>
+
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Attendance</dt>
                     <dd class="col-sm-8">
-                        <span class="badge @(eligible ? "bg-success" : "bg-danger") fs-6">@Model.AttendancePercentage%</span>
-                        (Required: ≥@Refund.EligibilityThreshold%)
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="badge @(eligible ? "bg-success" : "bg-danger")" style="font-size:0.85rem;">
+                                @Model.AttendancePercentage%
+                            </span>
+                            <span class="text-muted" style="font-size:0.8rem;">Required: ≥@Refund.EligibilityThreshold%</span>
+                        </div>
+                        <div class="mt-2" style="height:6px;border-radius:3px;background:#f1f5f9;overflow:hidden;max-width:200px;">
+                            <div style="height:100%;width:@(Math.Min(100,(int)Model.AttendancePercentage))%;background:@(eligible ? "#2ecc71" : "#ef4444");border-radius:3px;"></div>
+                        </div>
                     </dd>
-                    <dt class="col-sm-4">Status</dt>
+
+                    <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Status</dt>
                     <dd class="col-sm-8">
-                        <span class="badge bg-secondary">@Model.RefundStatus</span>
+                        @{
+                            var (sb, si) = Model.RefundStatus switch
+                            {
+                                RefundStatus.Approved => ("bg-success", "fa-circle-check"),
+                                RefundStatus.Rejected => ("bg-danger", "fa-circle-xmark"),
+                                _ => ("bg-warning text-dark", "fa-clock")
+                            };
+                        }
+                        <span class="badge @sb"><i class="fa-solid @si me-1"></i>@Model.RefundStatus</span>
                     </dd>
+
                     @if (!string.IsNullOrEmpty(Model.AdminRemarks))
                     {
-                        <dt class="col-sm-4">Remarks</dt>
-                        <dd class="col-sm-8">@Model.AdminRemarks</dd>
+                        <dt class="col-sm-4 text-muted" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">Remarks</dt>
+                        <dd class="col-sm-8 text-muted">@Model.AdminRemarks</dd>
                     }
                 </dl>
             </div>
@@ -38,34 +79,46 @@
 
         @if (Model.RefundStatus == RefundStatus.Pending)
         {
-            <div class="card border-0 shadow-sm mt-4">
-                <div class="card-header bg-white"><strong>Admin decision</strong></div>
-                <div class="card-body">
+            <div class="card admin-table-card">
+                <div class="card-header" style="padding:1rem 1.25rem;">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-gavel" style="color:#f59e0b;"></i>
+                        <span style="font-weight:700;">Admin Decision</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
                     @if (eligible)
                     {
-                        <form asp-action="Approve" method="post" class="mb-3">
+                        <form asp-action="Approve" method="post" class="mb-4" data-loading="true">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.RefundId" />
                             <label class="form-label">Remarks (optional)</label>
-                            <textarea name="adminRemarks" class="form-control mb-2" rows="2"></textarea>
-                            <button type="submit" class="btn btn-success">Approve Refund</button>
+                            <textarea name="adminRemarks" class="form-control mb-3" rows="2" placeholder="Add any notes..."></textarea>
+                            <button type="submit" class="btn btn-success w-100">
+                                <i class="fa-solid fa-circle-check me-2"></i>Approve Refund
+                            </button>
                         </form>
+                        <hr style="border-color:#f1f5f9;" />
                     }
                     else
                     {
-                        <div class="alert alert-warning">Student does not meet the @Refund.EligibilityThreshold% attendance requirement.</div>
+                        <div class="alert alert-warning mb-4">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                            Student does not meet the <strong>@Refund.EligibilityThreshold%</strong> attendance requirement. Cannot approve.
+                        </div>
                     }
-                    <form asp-action="Reject" method="post">
+                    <form asp-action="Reject" method="post" data-loading="true">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@Model.RefundId" />
-                        <label class="form-label">Rejection remarks</label>
-                        <textarea name="adminRemarks" class="form-control mb-2" rows="2"></textarea>
-                        <button type="submit" class="btn btn-danger">Reject</button>
+                        <label class="form-label">Rejection Reason</label>
+                        <textarea name="adminRemarks" class="form-control mb-3" rows="2" placeholder="Provide reason for rejection..."></textarea>
+                        <button type="submit" class="btn btn-danger w-100"
+                                data-confirm="Are you sure you want to reject this refund?">
+                            <i class="fa-solid fa-circle-xmark me-2"></i>Reject Refund
+                        </button>
                     </form>
                 </div>
             </div>
         }
     </div>
 </div>
-
-<a asp-action="Index" class="btn btn-outline-secondary mt-3">Back</a>

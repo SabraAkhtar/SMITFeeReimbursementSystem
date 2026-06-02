@@ -177,6 +177,12 @@ else
         </div>
     </div>
 
+    <!-- Quick Access Cards -->
+    <div class="smit-section-header mb-3">
+        <h5 class="fw-700" style="color:#0f1923;font-weight:700;">Quick Access</h5>
+        <p class="text-muted small mb-0">Jump directly to your most-used features</p>
+    </div>
+
     <div class="smit-quick-links">
         @if (User.IsInRole("Admin"))
         {
@@ -199,6 +205,26 @@ else
                 <i class="fa-solid fa-hand-holding-dollar" style="color:#2ecc71;"></i>
                 <span>Refunds</span>
                 <small>Process requests</small>
+            </a>
+            <a asp-controller="Courses" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-book" style="color:#8b5cf6;"></i>
+                <span>Courses</span>
+                <small>Manage courses</small>
+            </a>
+            <a asp-controller="Attendance" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-calendar-check" style="color:#e74c3c;"></i>
+                <span>Attendance</span>
+                <small>View all records</small>
+            </a>
+            <a asp-controller="Admin" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-users-cog" style="color:#0ea5e9;"></i>
+                <span>Users</span>
+                <small>Manage accounts</small>
+            </a>
+            <a asp-controller="Profile" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-user-circle" style="color:#f59e0b;"></i>
+                <span>Profile</span>
+                <small>Your account</small>
             </a>
         }
         @if (User.IsInRole("Student"))
@@ -223,6 +249,11 @@ else
                 <span>My Payments</span>
                 <small>Payment history</small>
             </a>
+            <a asp-controller="Profile" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-user-circle" style="color:#8b5cf6;"></i>
+                <span>Profile</span>
+                <small>Your account</small>
+            </a>
         }
         @if (User.IsInRole("Teacher"))
         {
@@ -236,7 +267,93 @@ else
                 <span>Monthly Report</span>
                 <small>View attendance reports</small>
             </a>
+            <a asp-controller="Attendance" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-list" style="color:#f39c12;"></i>
+                <span>All Records</span>
+                <small>Browse attendance</small>
+            </a>
+            <a asp-controller="Profile" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-user-circle" style="color:#8b5cf6;"></i>
+                <span>Profile</span>
+                <small>Your account</small>
+            </a>
         }
+    </div>
+
+    <!-- System Info Strip -->
+    <div class="smit-info-strip">
+        <div class="smit-info-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <div>
+                <strong>SMIT Academy</strong>
+                <span>Fee Reimbursement System</span>
+            </div>
+        </div>
+        <div class="smit-info-divider"></div>
+        <div class="smit-info-item">
+            <i class="fa-solid fa-money-bill-wave" style="color:#f39c12;"></i>
+            <div>
+                <strong>Rs. 3,000</strong>
+                <span>Course Fee</span>
+            </div>
+        </div>
+        <div class="smit-info-divider"></div>
+        <div class="smit-info-item">
+            <i class="fa-solid fa-calendar-check" style="color:#3498db;"></i>
+            <div>
+                <strong>80% Attendance</strong>
+                <span>Required for Refund</span>
+            </div>
+        </div>
+        <div class="smit-info-divider"></div>
+        <div class="smit-info-item">
+            <i class="fa-solid fa-file-pdf" style="color:#e74c3c;"></i>
+            <div>
+                <strong>Auto PDF Receipts</strong>
+                <span>Generated on approval</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works (compact) -->
+    <div class="smit-logged-how">
+        <div class="smit-section-header mb-3">
+            <h5 class="fw-700" style="color:#0f1923;font-weight:700;">System Overview</h5>
+            <p class="text-muted small mb-0">How the reimbursement process works</p>
+        </div>
+        <div class="smit-steps-compact">
+            <div class="smit-step-compact">
+                <div class="smit-step-num">1</div>
+                <div>
+                    <strong>Register &amp; Enroll</strong>
+                    <p>Create account and join a course</p>
+                </div>
+            </div>
+            <div class="smit-step-arrow-compact"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="smit-step-compact">
+                <div class="smit-step-num">2</div>
+                <div>
+                    <strong>Pay Fee</strong>
+                    <p>Submit Rs.&nbsp;3,000 with screenshot</p>
+                </div>
+            </div>
+            <div class="smit-step-arrow-compact"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="smit-step-compact">
+                <div class="smit-step-num">3</div>
+                <div>
+                    <strong>Attend 80%+</strong>
+                    <p>Maintain minimum attendance</p>
+                </div>
+            </div>
+            <div class="smit-step-arrow-compact"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="smit-step-compact">
+                <div class="smit-step-num">4</div>
+                <div>
+                    <strong>Get Refund</strong>
+                    <p>Automatic reimbursement eligibility</p>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
@@ -496,6 +613,114 @@ else
 .smit-quick-card span { font-weight: 700; color: #0f1923; font-size: 0.95rem; }
 .smit-quick-card small { color: #94a3b8; font-size: 0.8rem; }
 
+/* ===== INFO STRIP ===== */
+.smit-info-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    gap: 0;
+}
+.smit-info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1.5rem;
+    flex: 1;
+    min-width: 160px;
+}
+.smit-info-item i {
+    font-size: 1.4rem;
+    color: #2ecc71;
+    flex-shrink: 0;
+}
+.smit-info-item div {
+    display: flex;
+    flex-direction: column;
+}
+.smit-info-item strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f1923;
+    line-height: 1.2;
+}
+.smit-info-item span {
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+.smit-info-divider {
+    width: 1px;
+    height: 36px;
+    background: #e2e8f0;
+    flex-shrink: 0;
+}
+
+/* ===== COMPACT STEPS ===== */
+.smit-logged-how {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    padding: 1.5rem 2rem;
+    margin: 0 0 1.5rem;
+}
+.smit-steps-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.smit-step-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-width: 160px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    border: 1px solid #e2e8f0;
+}
+.smit-step-compact .smit-step-num {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin: 0;
+}
+.smit-step-compact div strong {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f1923;
+    line-height: 1.2;
+}
+.smit-step-compact div p {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin: 0;
+    line-height: 1.3;
+}
+.smit-step-arrow-compact {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
 /* ===== RESPONSIVE ===== */
 @@media (max-width: 768px) {
     .smit-hero { flex-direction: column; text-align: center; padding: 2rem 0; }
@@ -507,5 +732,10 @@ else
     .smit-stat { padding: 0.5rem 1rem; }
     .smit-step-arrow { display: none; }
     .smit-steps { gap: 1rem; }
+    .smit-info-divider { display: none; }
+    .smit-info-item { padding: 0.5rem 1rem; }
+    .smit-step-arrow-compact { display: none; }
+    .smit-steps-compact { gap: 0.75rem; }
+    .smit-logged-how { padding: 1.25rem; }
 }
 </style>

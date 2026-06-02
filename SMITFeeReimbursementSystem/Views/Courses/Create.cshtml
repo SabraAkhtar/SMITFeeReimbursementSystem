@@ -1,17 +1,42 @@
 @model SMITFeeReimbursementSystem.ViewModels.CourseViewModel
 @{
     ViewData["Title"] = "Add Course";
+    Layout = "_AdminLayout";
 }
 
-<h1 class="h2 text-primary mb-4">Add Course</h1>
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 class="mb-0" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#0f1923;">Add New Course</h2>
+        <p class="text-muted mb-0" style="font-size:0.875rem;">Fill in the details to create a new course</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left me-1"></i>Back to Courses
+    </a>
+</div>
 
 <div class="row">
-    <div class="col-md-8">
-        <form asp-action="Create" method="post" class="card border-0 shadow-sm">
-            <div class="card-body">
-                <partial name="_CourseForm" model="Model" />
-                <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    <div class="col-lg-8 col-xl-6">
+        <form asp-action="Create" method="post" data-loading="true">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4"></div>
+            <div class="card admin-table-card mb-4">
+                <div class="card-header" style="padding:1rem 1.25rem;">
+                    <div class="d-flex align-items-center gap-2">
+                        <div style="width:32px;height:32px;border-radius:8px;background:rgba(46,204,113,0.1);display:flex;align-items:center;justify-content:center;">
+                            <i class="fa-solid fa-book-open" style="color:#2ecc71;font-size:0.85rem;"></i>
+                        </div>
+                        <span style="font-weight:700;">Course Details</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <partial name="_CourseForm" model="Model" />
+                    <div class="d-flex gap-3 pt-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-plus me-2"></i>Create Course
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

@@ -1,19 +1,23 @@
 @model IEnumerable<SMITFeeReimbursementSystem.Services.AttendanceSummary>
 @{
     ViewData["Title"] = "Monthly Attendance Report";
+    Layout = "_AdminLayout";
     var threshold = SMITFeeReimbursementSystem.Models.Refund.EligibilityThreshold;
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
     <div>
-        <h1 class="h2 text-primary mb-0">Monthly Attendance Report</h1>
-        <p class="text-muted mb-0">@ViewBag.MonthName · Formula: (Present / Total) × 100</p>
+        <h2 class="mb-0" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#0f1923;">Monthly Attendance Report</h2>
+        <p class="text-muted mb-0" style="font-size:0.875rem;">@ViewBag.MonthName · Formula: (Present / Total) × 100</p>
     </div>
-    <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left me-1"></i>Back to Records
+    </a>
 </div>
 
-<form method="get" class="card border-0 shadow-sm mb-4">
-    <div class="card-body row g-2 align-items-end">
+<form method="get" class="filter-bar mb-4">
+    <div class="row g-2 align-items-end">
         <div class="col-md-4">
             <label class="form-label">Course</label>
             <select name="courseId" class="form-select" asp-items="ViewBag.CourseId">
@@ -29,55 +33,69 @@
             <input type="number" name="month" value="@ViewBag.Month" class="form-control" min="1" max="12" />
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn btn-primary w-100">Generate</button>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fa-solid fa-chart-bar me-1"></i>Generate
+            </button>
         </div>
     </div>
 </form>
 
 @if (Model.Any())
 {
-    <div class="card border-0 shadow-sm">
+    <div class="admin-table-card">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
                     <tr>
                         <th>Student</th>
                         <th>Course</th>
-                        <th>Present</th>
-                        <th>Absent</th>
-                        <th>Leave</th>
-                        <th>Total</th>
+                        <th class="text-center">Present</th>
+                        <th class="text-center">Absent</th>
+                        <th class="text-center">Leave</th>
+                        <th class="text-center">Total</th>
                         <th>Attendance %</th>
-                        <th>Refund Eligible</th>
+                        <th class="text-center">Refund Eligible</th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach (var s in Model)
                 {
                     var eligible = s.AttendancePercentage >= threshold;
+                    var pctColor = eligible ? "#2ecc71" : "#f59e0b";
                     <tr>
-                        <td>@s.StudentName</td>
-                        <td>@s.CourseName</td>
-                        <td>@s.PresentDays</td>
-                        <td>@s.AbsentDays</td>
-                        <td>@s.LeaveDays</td>
-                        <td>@s.TotalDays</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                <div class="progress flex-grow-1" style="height: 8px; min-width: 80px;">
-                                    <div class="progress-bar @(eligible ? "bg-success" : "bg-warning")" style="width: @s.AttendancePercentage%"></div>
+                                <div style="width:30px;height:30px;border-radius:50%;background:rgba(46,204,113,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                    <i class="fa-solid fa-user fa-xs" style="color:#2ecc71;"></i>
                                 </div>
-                                <strong>@s.AttendancePercentage%</strong>
+                                <span style="font-weight:500;font-size:0.875rem;">@s.StudentName</span>
                             </div>
                         </td>
+                        <td class="text-muted" style="font-size:0.875rem;">@s.CourseName</td>
+                        <td class="text-center"><span class="badge bg-success">@s.PresentDays</span></td>
+                        <td class="text-center"><span class="badge bg-danger">@s.AbsentDays</span></td>
+                        <td class="text-center"><span class="badge bg-info">@s.LeaveDays</span></td>
+                        <td class="text-center"><span style="font-weight:600;">@s.TotalDays</span></td>
                         <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div style="width:60px;height:6px;border-radius:3px;background:#f1f5f9;overflow:hidden;flex-shrink:0;">
+                                    <div style="height:100%;width:@(Math.Min(100,s.AttendancePercentage))%;background:@pctColor;border-radius:3px;"></div>
+                                </div>
+                                <strong style="color:@pctColor;font-size:0.875rem;">@s.AttendancePercentage%</strong>
+                            </div>
+                        </td>
+                        <td class="text-center">
                             @if (eligible)
                             {
-                                <span class="badge bg-success">Yes (≥@threshold%)</span>
+                                <span class="badge" style="background:rgba(46,204,113,0.1);color:#2ecc71;border:1px solid rgba(46,204,113,0.2);">
+                                    <i class="fa-solid fa-check me-1"></i>Yes
+                                </span>
                             }
                             else
                             {
-                                <span class="badge bg-secondary">No</span>
+                                <span class="badge" style="background:rgba(245,158,11,0.1);color:#d97706;border:1px solid rgba(245,158,11,0.2);">
+                                    <i class="fa-solid fa-xmark me-1"></i>No
+                                </span>
                             }
                         </td>
                     </tr>
@@ -89,5 +107,11 @@
 }
 else
 {
-    <div class="alert alert-info">Select a course and month to generate the report.</div>
+    <div class="card border-0 text-center py-5"
+         style="border-radius:1rem;background:#f8fafc;border:1.5px dashed #e2e8f0!important;">
+        <div style="color:#94a3b8;">
+            <i class="fa-solid fa-chart-bar fa-2x mb-3 d-block" style="opacity:0.3;"></i>
+            <p class="mb-0" style="font-size:0.9rem;">Select a course and month to generate the report.</p>
+        </div>
+    </div>
 }
