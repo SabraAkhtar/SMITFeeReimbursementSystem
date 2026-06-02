@@ -19,6 +19,11 @@ public class EditProfileViewModel
 
     public string? Email { get; set; }
     public string? Role { get; set; }
+
+    [StringLength(500)]
+    [Url]
+    [Display(Name = "SMIT Attendance Link")]
+    public string? SmitAttendanceLink { get; set; }
 }
 
 public class ChangePasswordViewModel

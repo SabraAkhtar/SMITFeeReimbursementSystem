@@ -12,4 +12,8 @@ public class ApplicationUser : IdentityUser
     [StringLength(50)]
     [Display(Name = "Roll Number")]
     public string? RollNumber { get; set; }
+
+    [StringLength(500)]
+    [Display(Name = "SMIT Attendance Link")]
+    public string? SmitAttendanceLink { get; set; }
 }

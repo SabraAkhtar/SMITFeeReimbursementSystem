@@ -92,6 +92,7 @@ public class StudentsController(
             RollNumber = student.RollNumber ?? "—",
             Email = student.Email ?? "",
             Phone = student.PhoneNumber,
+            SmitAttendanceLink = student.SmitAttendanceLink,
             Enrollments = enrollments,
             Payments = payments,
             Refunds = refunds

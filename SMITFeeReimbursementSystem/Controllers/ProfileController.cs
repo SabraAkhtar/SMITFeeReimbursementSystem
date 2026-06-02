@@ -23,7 +23,8 @@ public class ProfileController(
             RollNumber = user.RollNumber,
             PhoneNumber = user.PhoneNumber,
             Email = user.Email,
-            Role = roles.FirstOrDefault()
+            Role = roles.FirstOrDefault(),
+            SmitAttendanceLink = user.SmitAttendanceLink
         };
         return View(model);
     }
@@ -44,6 +45,7 @@ public class ProfileController(
         user.FullName = model.FullName;
         user.RollNumber = model.RollNumber;
         user.PhoneNumber = model.PhoneNumber;
+        user.SmitAttendanceLink = model.SmitAttendanceLink;
 
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded)
