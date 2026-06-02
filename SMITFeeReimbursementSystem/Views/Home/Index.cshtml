@@ -4,336 +4,508 @@
 
 @if (!User.Identity?.IsAuthenticated ?? true)
 {
-    <!-- Hero Section -->
-    <div class="hero-section text-center py-5 mb-5">
-        <div class="hero-badge mb-3">
-            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
-                <i class="fa-solid fa-star me-1"></i> SMIT Academy — FYP Project
+    <!-- ===== HERO ===== -->
+    <div class="smit-hero">
+        <div class="smit-hero-content">
+            <span class="smit-badge">
+                <i class="fa-solid fa-graduation-cap me-1"></i> SMIT Academy &mdash; FYP Project
             </span>
+            <h1 class="smit-hero-title">
+                Fee Reimbursement<br />
+                <span class="smit-hero-highlight">Management System</span>
+            </h1>
+            <p class="smit-hero-desc">
+                A complete academy management platform. Students pay course fees,
+                attend classes, and earn automatic fee reimbursement when attendance
+                reaches <strong>80%</strong>.
+            </p>
+            <div class="smit-hero-btns">
+                <a class="smit-btn-primary" asp-controller="Account" asp-action="Login">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
+                </a>
+                <a class="smit-btn-outline" asp-controller="Account" asp-action="Register">
+                    <i class="fa-solid fa-user-plus me-2"></i>Create Account
+                </a>
+            </div>
         </div>
-        <h1 class="display-5 fw-bold mb-3">
-            Fee Reimbursement<br />
-            <span class="text-gradient">Management System</span>
-        </h1>
-        <p class="lead text-muted mb-4 col-lg-7 mx-auto">
-            A complete academy management platform. Students pay course fees, attend classes,
-            and earn automatic fee reimbursement when attendance reaches <strong>80%</strong>.
-        </p>
-        <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a class="btn btn-primary btn-lg px-4" asp-controller="Account" asp-action="Login">
+        <div class="smit-hero-image">
+            <div class="smit-hero-card">
+                <div class="smit-hero-card-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="smit-hero-card-lines">
+                    <div class="smit-line smit-line-1"></div>
+                    <div class="smit-line smit-line-2"></div>
+                    <div class="smit-line smit-line-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <div class="smit-stats">
+        <div class="smit-stat">
+            <div class="smit-stat-value" style="color:#2ecc71;">3,000</div>
+            <div class="smit-stat-label">PKR Course Fee</div>
+        </div>
+        <div class="smit-stat-divider"></div>
+        <div class="smit-stat">
+            <div class="smit-stat-value" style="color:#f39c12;">80%</div>
+            <div class="smit-stat-label">Attendance for Refund</div>
+        </div>
+        <div class="smit-stat-divider"></div>
+        <div class="smit-stat">
+            <div class="smit-stat-value" style="color:#3498db;">3</div>
+            <div class="smit-stat-label">User Roles</div>
+        </div>
+        <div class="smit-stat-divider"></div>
+        <div class="smit-stat">
+            <div class="smit-stat-value" style="color:#e74c3c;">PDF</div>
+            <div class="smit-stat-label">Auto Receipts</div>
+        </div>
+    </div>
+
+    <!-- ===== WHO USES ===== -->
+    <div class="smit-section">
+        <div class="smit-section-header">
+            <h2>Who Uses This System?</h2>
+            <p>Three roles, each with dedicated features</p>
+        </div>
+        <div class="smit-roles">
+            <div class="smit-role-card">
+                <div class="smit-role-icon" style="background:rgba(46,204,113,0.12);">
+                    <i class="fa-solid fa-user-shield" style="color:#2ecc71;"></i>
+                </div>
+                <h4>Admin</h4>
+                <p>Full system control with analytics dashboard.</p>
+                <ul class="smit-feature-list">
+                    <li><i class="fa-solid fa-check"></i> Manage students &amp; courses</li>
+                    <li><i class="fa-solid fa-check"></i> Approve / reject payments</li>
+                    <li><i class="fa-solid fa-check"></i> Process refund requests</li>
+                    <li><i class="fa-solid fa-check"></i> Generate PDF receipts</li>
+                    <li><i class="fa-solid fa-check"></i> View charts &amp; reports</li>
+                </ul>
+            </div>
+            <div class="smit-role-card smit-role-card--featured">
+                <div class="smit-role-badge">Most Used</div>
+                <div class="smit-role-icon" style="background:rgba(52,152,219,0.12);">
+                    <i class="fa-solid fa-user-graduate" style="color:#3498db;"></i>
+                </div>
+                <h4>Student</h4>
+                <p>Submit fees and track your reimbursement.</p>
+                <ul class="smit-feature-list">
+                    <li><i class="fa-solid fa-check"></i> Submit fee payment</li>
+                    <li><i class="fa-solid fa-check"></i> View attendance %</li>
+                    <li><i class="fa-solid fa-check"></i> Track refund status</li>
+                    <li><i class="fa-solid fa-check"></i> Download PDF receipts</li>
+                    <li><i class="fa-solid fa-check"></i> Access student portal</li>
+                </ul>
+            </div>
+            <div class="smit-role-card">
+                <div class="smit-role-icon" style="background:rgba(243,156,18,0.12);">
+                    <i class="fa-solid fa-chalkboard-user" style="color:#f39c12;"></i>
+                </div>
+                <h4>Teacher</h4>
+                <p>Mark and manage student attendance.</p>
+                <ul class="smit-feature-list">
+                    <li><i class="fa-solid fa-check"></i> Mark daily attendance</li>
+                    <li><i class="fa-solid fa-check"></i> View attendance records</li>
+                    <li><i class="fa-solid fa-check"></i> Monthly reports</li>
+                    <li><i class="fa-solid fa-check"></i> Course-wise tracking</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <div class="smit-how">
+        <div class="smit-section-header">
+            <h2>How It Works</h2>
+            <p>4 simple steps to get your fee reimbursed</p>
+        </div>
+        <div class="smit-steps">
+            <div class="smit-step">
+                <div class="smit-step-num">1</div>
+                <h5>Register</h5>
+                <p>Create your account and get enrolled in a course.</p>
+            </div>
+            <div class="smit-step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="smit-step">
+                <div class="smit-step-num">2</div>
+                <h5>Pay Fee</h5>
+                <p>Submit Rs.&nbsp;3,000 fee with payment screenshot.</p>
+            </div>
+            <div class="smit-step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="smit-step">
+                <div class="smit-step-num">3</div>
+                <h5>Attend</h5>
+                <p>Maintain 80%+ attendance throughout the course.</p>
+            </div>
+            <div class="smit-step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="smit-step">
+                <div class="smit-step-num">4</div>
+                <h5>Get Refund</h5>
+                <p>Automatically become eligible for fee reimbursement.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CTA ===== -->
+    <div class="smit-cta">
+        <h2>Ready to get started?</h2>
+        <p>Join SMIT Fee Reimbursement System today</p>
+        <div class="smit-hero-btns">
+            <a class="smit-btn-primary" asp-controller="Account" asp-action="Register">
+                <i class="fa-solid fa-user-plus me-2"></i>Create Free Account
+            </a>
+            <a class="smit-btn-outline-white" asp-controller="Account" asp-action="Login">
                 <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
             </a>
-            <a class="btn btn-outline-primary btn-lg px-4" asp-controller="Account" asp-action="Register">
-                <i class="fa-solid fa-user-plus me-2"></i>Create Account
-            </a>
-        </div>
-    </div>
-
-    <!-- Stats Row -->
-    <div class="row g-3 mb-5 text-center">
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm h-100 py-3">
-                <div class="fs-2 fw-bold text-primary">3,000</div>
-                <div class="text-muted small">PKR Course Fee</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm h-100 py-3">
-                <div class="fs-2 fw-bold text-success">80%</div>
-                <div class="text-muted small">Attendance for Refund</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm h-100 py-3">
-                <div class="fs-2 fw-bold text-info">3</div>
-                <div class="text-muted small">User Roles</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm h-100 py-3">
-                <div class="fs-2 fw-bold text-warning">PDF</div>
-                <div class="text-muted small">Auto Receipts</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Role Cards -->
-    <h2 class="text-center fw-bold mb-4">Who Uses This System?</h2>
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 role-card">
-                <div class="card-body p-4">
-                    <div class="role-icon bg-primary-subtle mb-3">
-                        <i class="fa-solid fa-user-shield fa-xl text-primary"></i>
-                    </div>
-                    <h5 class="fw-bold">Admin</h5>
-                    <p class="text-muted small mb-3">Full system control with analytics dashboard.</p>
-                    <ul class="list-unstyled small text-muted">
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Manage students & courses</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Approve/reject payments</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Process refund requests</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Generate PDF receipts</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>View charts & reports</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 role-card">
-                <div class="card-body p-4">
-                    <div class="role-icon bg-info-subtle mb-3">
-                        <i class="fa-solid fa-chalkboard-user fa-xl text-info"></i>
-                    </div>
-                    <h5 class="fw-bold">Teacher</h5>
-                    <p class="text-muted small mb-3">Mark and manage student attendance.</p>
-                    <ul class="list-unstyled small text-muted">
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Mark daily attendance</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>View attendance records</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Monthly reports</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Course-wise tracking</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm h-100 role-card">
-                <div class="card-body p-4">
-                    <div class="role-icon bg-success-subtle mb-3">
-                        <i class="fa-solid fa-user-graduate fa-xl text-success"></i>
-                    </div>
-                    <h5 class="fw-bold">Student</h5>
-                    <p class="text-muted small mb-3">Submit fees and track your reimbursement.</p>
-                    <ul class="list-unstyled small text-muted">
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Submit fee payment</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>View attendance %</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Track refund status</li>
-                        <li><i class="fa-solid fa-check text-success me-2"></i>Download PDF receipts</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- How It Works -->
-    <div class="card border-0 bg-light mb-5">
-        <div class="card-body p-4 p-md-5">
-            <h2 class="text-center fw-bold mb-4">How It Works</h2>
-            <div class="row g-4 text-center">
-                <div class="col-md-3">
-                    <div class="step-circle mx-auto mb-3">1</div>
-                    <h6 class="fw-bold">Register</h6>
-                    <p class="text-muted small">Create your account and get enrolled in a course.</p>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-circle mx-auto mb-3">2</div>
-                    <h6 class="fw-bold">Pay Fee</h6>
-                    <p class="text-muted small">Submit Rs. 3,000 fee with payment screenshot.</p>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-circle mx-auto mb-3">3</div>
-                    <h6 class="fw-bold">Attend Classes</h6>
-                    <p class="text-muted small">Maintain 80%+ attendance throughout the course.</p>
-                </div>
-                <div class="col-md-3">
-                    <div class="step-circle mx-auto mb-3">4</div>
-                    <h6 class="fw-bold">Get Refund</h6>
-                    <p class="text-muted small">Automatically become eligible for fee reimbursement.</p>
-                </div>
-            </div>
         </div>
     </div>
 }
 else
 {
-    <div class="row g-4">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm text-white" style="background:var(--smit-navy);">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center gap-3">
-                        <i class="fa-solid fa-circle-check fa-2x" style="color:#2ecc71;"></i>
-                        <div>
-                            <h5 class="mb-1">Welcome back, @User.Identity?.Name!</h5>
-                            <p class="mb-0 opacity-75 small">Use the navigation menu to access your features.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Logged in quick links -->
+    <div class="smit-welcome">
+        <div class="smit-welcome-icon">
+            <i class="fa-solid fa-circle-check"></i>
         </div>
+        <div>
+            <h4>Welcome back, @User.Identity?.Name!</h4>
+            <p>Use the navigation menu to access your features.</p>
+        </div>
+    </div>
 
-        @* ===== REJECTION ALERT on Home Page ===== *@
-        @if (User.IsInRole("Student"))
-        {
-            var rejected = ViewBag.RejectedPayments as List<SMITFeeReimbursementSystem.Models.Payment>;
-            if (rejected != null && rejected.Any())
-            {
-                <div class="col-12">
-                    <div class="alert border-0 p-0 overflow-hidden shadow-sm" style="border-radius:0.75rem;">
-                        <div class="p-3 text-white d-flex align-items-center gap-3" style="background:#dc3545;">
-                            <i class="fa-solid fa-triangle-exclamation fa-2x flex-shrink-0"></i>
-                            <div>
-                                <div class="fw-bold fs-6">⚠️ Aapki Payment Reject Ho Gayi Hai!</div>
-                                <div class="small opacity-90">Admin ne aapki fee payment reject kar di hai. Neeche reason dekhen aur dobara submit karen.</div>
-                            </div>
-                        </div>
-                        @foreach (var rp in rejected)
-                        {
-                            <div class="p-3 bg-danger-subtle border-top">
-                                <div class="row align-items-center g-2">
-                                    <div class="col-md-8">
-                                        <div class="fw-semibold text-danger">
-                                            <i class="fa-solid fa-xmark-circle me-1"></i>
-                                            @rp.Course?.CourseName — Rs. @rp.Amount.ToString("N0")
-                                        </div>
-                                        @if (!string.IsNullOrWhiteSpace(rp.AdminRemarks))
-                                        {
-                                            <div class="mt-1 small p-2 bg-white rounded border border-danger-subtle">
-                                                <strong><i class="fa-solid fa-comment-dots me-1 text-danger"></i>Reason:</strong>
-                                                @rp.AdminRemarks
-                                            </div>
-                                        }
-                                        <div class="small text-muted mt-1">
-                                            Rejected: @(rp.ReviewedAt?.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt") ?? "—")
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 text-md-end">
-                                        <a asp-controller="Payments" asp-action="Submit" class="btn btn-danger btn-sm">
-                                            <i class="fa-solid fa-rotate-right me-1"></i>Resubmit Payment
-                                        </a>
-                                        <a asp-controller="Payments" asp-action="MyPayments" class="btn btn-outline-secondary btn-sm mt-1">
-                                            View All Payments
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
-        }
+    <div class="smit-quick-links">
         @if (User.IsInRole("Admin"))
         {
-            <div class="col-md-4">
-                <a asp-controller="Dashboard" asp-action="Index" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-chart-line fa-2x text-primary mb-3"></i>
-                            <h6 class="fw-bold">Dashboard</h6>
-                            <p class="text-muted small mb-0">View analytics and statistics</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a asp-controller="Payments" asp-action="Index" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-credit-card fa-2x text-warning mb-3"></i>
-                            <h6 class="fw-bold">Payments</h6>
-                            <p class="text-muted small mb-0">Review pending payments</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a asp-controller="Refunds" asp-action="Index" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-hand-holding-dollar fa-2x text-success mb-3"></i>
-                            <h6 class="fw-bold">Refunds</h6>
-                            <p class="text-muted small mb-0">Process refund requests</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <a asp-controller="Dashboard" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-chart-line" style="color:#2ecc71;"></i>
+                <span>Dashboard</span>
+                <small>View analytics</small>
+            </a>
+            <a asp-controller="Payments" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-credit-card" style="color:#f39c12;"></i>
+                <span>Payments</span>
+                <small>Review pending</small>
+            </a>
+            <a asp-controller="Students" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-user-graduate" style="color:#3498db;"></i>
+                <span>Students</span>
+                <small>Manage students</small>
+            </a>
+            <a asp-controller="Refunds" asp-action="Index" class="smit-quick-card">
+                <i class="fa-solid fa-hand-holding-dollar" style="color:#2ecc71;"></i>
+                <span>Refunds</span>
+                <small>Process requests</small>
+            </a>
         }
         @if (User.IsInRole("Student"))
         {
-            <div class="col-md-4">
-                <a asp-controller="Payments" asp-action="Submit" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-upload fa-2x text-primary mb-3"></i>
-                            <h6 class="fw-bold">Submit Payment</h6>
-                            <p class="text-muted small mb-0">Upload your fee payment</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a asp-controller="Attendance" asp-action="MyAttendance" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-calendar-check fa-2x text-info mb-3"></i>
-                            <h6 class="fw-bold">My Attendance</h6>
-                            <p class="text-muted small mb-0">Check your attendance %</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a asp-controller="Refunds" asp-action="MyRefunds" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-money-bill-wave fa-2x text-success mb-3"></i>
-                            <h6 class="fw-bold">My Refunds</h6>
-                            <p class="text-muted small mb-0">Track refund eligibility</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <a asp-controller="Payments" asp-action="Submit" class="smit-quick-card">
+                <i class="fa-solid fa-upload" style="color:#2ecc71;"></i>
+                <span>Submit Payment</span>
+                <small>Upload fee payment</small>
+            </a>
+            <a asp-controller="Attendance" asp-action="MyAttendance" class="smit-quick-card">
+                <i class="fa-solid fa-calendar-check" style="color:#3498db;"></i>
+                <span>My Attendance</span>
+                <small>Check attendance %</small>
+            </a>
+            <a asp-controller="Refunds" asp-action="MyRefunds" class="smit-quick-card">
+                <i class="fa-solid fa-money-bill-wave" style="color:#f39c12;"></i>
+                <span>My Refunds</span>
+                <small>Track eligibility</small>
+            </a>
+            <a asp-controller="Payments" asp-action="MyPayments" class="smit-quick-card">
+                <i class="fa-solid fa-wallet" style="color:#e74c3c;"></i>
+                <span>My Payments</span>
+                <small>Payment history</small>
+            </a>
         }
         @if (User.IsInRole("Teacher"))
         {
-            <div class="col-md-6">
-                <a asp-controller="Attendance" asp-action="Mark" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-pen fa-2x text-primary mb-3"></i>
-                            <h6 class="fw-bold">Mark Attendance</h6>
-                            <p class="text-muted small mb-0">Record today's attendance</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a asp-controller="Attendance" asp-action="MonthlyReport" class="text-decoration-none">
-                    <div class="card border-0 shadow-sm h-100 quick-link-card">
-                        <div class="card-body p-4 text-center">
-                            <i class="fa-solid fa-chart-bar fa-2x text-info mb-3"></i>
-                            <h6 class="fw-bold">Monthly Report</h6>
-                            <p class="text-muted small mb-0">View attendance reports</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            <a asp-controller="Attendance" asp-action="Mark" class="smit-quick-card">
+                <i class="fa-solid fa-pen" style="color:#2ecc71;"></i>
+                <span>Mark Attendance</span>
+                <small>Record today's attendance</small>
+            </a>
+            <a asp-controller="Attendance" asp-action="MonthlyReport" class="smit-quick-card">
+                <i class="fa-solid fa-chart-bar" style="color:#3498db;"></i>
+                <span>Monthly Report</span>
+                <small>View attendance reports</small>
+            </a>
         }
     </div>
 }
 
 <style>
-.text-gradient {
-    background: linear-gradient(135deg, #0d6efd, #6610f2);
+/* ===== HERO ===== */
+.smit-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 3rem 0 2rem;
+    flex-wrap: wrap;
+}
+.smit-hero-content { flex: 1; min-width: 280px; }
+.smit-badge {
+    display: inline-block;
+    background: rgba(46,204,113,0.12);
+    color: #2ecc71;
+    border: 1px solid rgba(46,204,113,0.3);
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+}
+.smit-hero-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: #0f1923;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+.smit-hero-highlight {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-.role-icon {
-    width: 56px; height: 56px;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
+.smit-hero-desc {
+    color: #64748b;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.8rem;
+    max-width: 480px;
 }
-.role-card { transition: transform 0.2s, box-shadow 0.2s; }
-.role-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important; }
-.step-circle {
+.smit-hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.smit-btn-primary {
+    background: #2ecc71;
+    color: #fff !important;
+    padding: 0.75rem 1.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center;
+    box-shadow: 0 4px 15px rgba(46,204,113,0.35);
+}
+.smit-btn-primary:hover { background: #27ae60; transform: translateY(-2px); }
+.smit-btn-outline {
+    border: 2px solid #2ecc71;
+    color: #2ecc71 !important;
+    padding: 0.75rem 1.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center;
+}
+.smit-btn-outline:hover { background: #2ecc71; color: #fff !important; }
+.smit-btn-outline-white {
+    border: 2px solid rgba(255,255,255,0.6);
+    color: #fff !important;
+    padding: 0.75rem 1.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center;
+}
+.smit-btn-outline-white:hover { background: rgba(255,255,255,0.15); }
+
+/* Hero image card */
+.smit-hero-image {
+    flex: 0 0 280px;
+    display: flex; justify-content: center;
+}
+.smit-hero-card {
+    background: linear-gradient(135deg, #0f1923, #1a2332);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 240px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    border: 1px solid rgba(46,204,113,0.2);
+}
+.smit-hero-card-icon {
+    width: 60px; height: 60px;
+    background: rgba(46,204,113,0.15);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; color: #2ecc71;
+    margin-bottom: 1.5rem;
+}
+.smit-line {
+    height: 10px; border-radius: 50px;
+    background: rgba(46,204,113,0.2);
+    margin-bottom: 0.75rem;
+}
+.smit-line-1 { width: 100%; background: rgba(46,204,113,0.4); }
+.smit-line-2 { width: 70%; }
+.smit-line-3 { width: 85%; }
+
+/* ===== STATS ===== */
+.smit-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+.smit-stat { text-align: center; padding: 0.5rem 2rem; }
+.smit-stat-value { font-size: 2rem; font-weight: 800; line-height: 1; }
+.smit-stat-label { font-size: 0.8rem; color: #94a3b8; margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.smit-stat-divider { width: 1px; height: 40px; background: #e2e8f0; }
+
+/* ===== SECTION ===== */
+.smit-section { padding: 2rem 0; }
+.smit-section-header { text-align: center; margin-bottom: 2.5rem; }
+.smit-section-header h2 { font-size: 1.8rem; font-weight: 800; color: #0f1923; }
+.smit-section-header p { color: #94a3b8; margin: 0; }
+
+/* ===== ROLE CARDS ===== */
+.smit-roles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+.smit-role-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.smit-role-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+.smit-role-card--featured {
+    border-color: #2ecc71;
+    box-shadow: 0 4px 20px rgba(46,204,113,0.15);
+}
+.smit-role-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: #2ecc71; color: #fff;
+    padding: 0.2rem 0.9rem; border-radius: 50px;
+    font-size: 0.75rem; font-weight: 600;
+}
+.smit-role-icon {
+    width: 56px; height: 56px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; margin-bottom: 1rem;
+}
+.smit-role-card h4 { font-weight: 700; color: #0f1923; margin-bottom: 0.5rem; }
+.smit-role-card p { color: #94a3b8; font-size: 0.875rem; margin-bottom: 1rem; }
+.smit-feature-list { list-style: none; padding: 0; margin: 0; }
+.smit-feature-list li {
+    font-size: 0.875rem; color: #475569;
+    padding: 0.3rem 0;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.smit-feature-list li i { color: #2ecc71; font-size: 0.75rem; }
+
+/* ===== HOW IT WORKS ===== */
+.smit-how { padding: 2rem 0; }
+.smit-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.smit-step {
+    background: #fff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    flex: 1; min-width: 140px; max-width: 200px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+}
+.smit-step-num {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1.1rem;
+    margin: 0 auto 0.75rem;
+}
+.smit-step h5 { font-weight: 700; color: #0f1923; font-size: 0.95rem; margin-bottom: 0.4rem; }
+.smit-step p { color: #94a3b8; font-size: 0.8rem; margin: 0; }
+.smit-step-arrow { color: #cbd5e1; font-size: 1.2rem; }
+
+/* ===== CTA ===== */
+.smit-cta {
+    background: linear-gradient(135deg, #0f1923, #1a2332);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin: 2rem 0;
+    border: 1px solid rgba(46,204,113,0.2);
+}
+.smit-cta h2 { color: #fff; font-weight: 800; margin-bottom: 0.5rem; }
+.smit-cta p { color: #94a3b8; margin-bottom: 1.5rem; }
+.smit-cta .smit-hero-btns { justify-content: center; }
+
+/* ===== WELCOME ===== */
+.smit-welcome {
+    background: linear-gradient(135deg, #0f1923, #1a2332);
+    border-radius: 16px; padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(46,204,113,0.2);
+}
+.smit-welcome-icon {
     width: 48px; height: 48px;
-    background: linear-gradient(135deg, #0d6efd, #6610f2);
-    color: white; border-radius: 50%;
+    background: rgba(46,204,113,0.15);
+    border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 1.1rem;
+    color: #2ecc71; font-size: 1.5rem; flex-shrink: 0;
 }
-.quick-link-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-.quick-link-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1) !important; }
-.bg-primary-subtle { background-color: #e0e7ff; }
-.bg-info-subtle { background-color: #e0f2fe; }
-.bg-success-subtle { background-color: #dcfce7; }
+.smit-welcome h4 { color: #fff; margin: 0 0 0.2rem; font-weight: 700; }
+.smit-welcome p { color: #94a3b8; margin: 0; font-size: 0.875rem; }
+
+/* ===== QUICK LINKS ===== */
+.smit-quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+.smit-quick-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+.smit-quick-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: #2ecc71; }
+.smit-quick-card i { font-size: 2rem; }
+.smit-quick-card span { font-weight: 700; color: #0f1923; font-size: 0.95rem; }
+.smit-quick-card small { color: #94a3b8; font-size: 0.8rem; }
+
+/* ===== RESPONSIVE ===== */
+@@media (max-width: 768px) {
+    .smit-hero { flex-direction: column; text-align: center; padding: 2rem 0; }
+    .smit-hero-desc { margin: 0 auto 1.5rem; }
+    .smit-hero-btns { justify-content: center; }
+    .smit-hero-image { display: none; }
+    .smit-stats { gap: 1rem; }
+    .smit-stat-divider { display: none; }
+    .smit-stat { padding: 0.5rem 1rem; }
+    .smit-step-arrow { display: none; }
+    .smit-steps { gap: 1rem; }
+}
 </style>

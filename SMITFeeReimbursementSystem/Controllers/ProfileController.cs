@@ -81,4 +81,49 @@ public class ProfileController(
         TempData["StatusMessage"] = "Password changed successfully.";
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> ChangeEmail()
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user is null) return Challenge();
+        ViewBag.CurrentEmail = user.Email;
+        return View(new ChangeEmailViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
+    {
+        var user = await userManager.GetUserAsync(User);
+        if (user is null) return Challenge();
+        ViewBag.CurrentEmail = user.Email;
+
+        if (!ModelState.IsValid) return View(model);
+
+        // Check if new email already taken
+        var existing = await userManager.FindByEmailAsync(model.NewEmail);
+        if (existing is not null && existing.Id != user.Id)
+        {
+            ModelState.AddModelError(nameof(model.NewEmail), "This email is already in use.");
+            return View(model);
+        }
+
+        user.Email = model.NewEmail;
+        user.UserName = model.NewEmail;
+        user.NormalizedEmail = model.NewEmail.ToUpperInvariant();
+        user.NormalizedUserName = model.NewEmail.ToUpperInvariant();
+        user.EmailConfirmed = true;
+
+        var result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+                ModelState.AddModelError(string.Empty, error.Description);
+            return View(model);
+        }
+
+        await signInManager.RefreshSignInAsync(user);
+        TempData["StatusMessage"] = "Email changed successfully.";
+        return RedirectToAction(nameof(Index));
+    }
 }

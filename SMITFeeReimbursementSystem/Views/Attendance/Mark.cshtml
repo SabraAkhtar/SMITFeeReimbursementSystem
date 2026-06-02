@@ -4,14 +4,19 @@
     ViewData["Title"] = "Mark Attendance";
 }
 
-<h1 class="h2 text-primary mb-4">Mark Daily Attendance</h1>
+<!-- Page Header -->
+<div class="mb-4">
+    <h2 class="mb-1" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#0f1923;">Mark Daily Attendance</h2>
+    <p class="text-muted mb-0" style="font-size:0.875rem;">Select a course and date to record attendance for enrolled students</p>
+</div>
 
-<form method="get" class="card border-0 shadow-sm mb-4">
-    <div class="card-body row g-2 align-items-end">
+<!-- Course & Date Selector -->
+<form method="get" class="filter-bar mb-4">
+    <div class="row g-3 align-items-end">
         <div class="col-md-5">
             <label class="form-label">Course</label>
             <select name="courseId" class="form-select" asp-items="ViewBag.CourseId" asp-for="CourseId">
-                <option value="0">-- Select course --</option>
+                <option value="0">— Select a course —</option>
             </select>
         </div>
         <div class="col-md-4">
@@ -19,70 +24,120 @@
             <input asp-for="Date" type="date" class="form-control" name="date" />
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-outline-primary w-100">Load Students</button>
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="fa-solid fa-users me-2"></i>Load Students
+            </button>
         </div>
     </div>
 </form>
 
 @if (Model.CourseId > 0 && Model.Students.Any())
 {
-    <form asp-action="Mark" method="post" class="card border-0 shadow-sm">
+    <form asp-action="Mark" method="post">
         <input type="hidden" asp-for="CourseId" />
         <input type="hidden" asp-for="Date" />
-        <div class="card-header bg-white d-flex justify-content-between">
-            <strong>Students (@Model.Students.Count)</strong>
-            <span class="text-muted">@Model.Date.ToString("dddd, dd MMM yyyy")</span>
+
+        <!-- Table Card -->
+        <div class="admin-table-card mb-4">
+            <div class="d-flex justify-content-between align-items-center px-4 py-3"
+                 style="border-bottom:1px solid #f1f5f9;">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-users" style="color:#2ecc71;"></i>
+                    <span class="fw-700" style="font-weight:700;">@Model.Students.Count Student(s)</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="fa-regular fa-calendar text-muted fa-sm"></i>
+                    <span class="text-muted" style="font-size:0.875rem;">@Model.Date.ToString("dddd, dd MMM yyyy")</span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student</th>
+                            <th style="width:200px;">Attendance Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @for (var i = 0; i < Model.Students.Count; i++)
+                    {
+                        <tr>
+                            <td class="text-muted" style="font-size:0.8rem;">@(i + 1)</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width:32px;height:32px;border-radius:50%;background:rgba(46,204,113,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                        <i class="fa-solid fa-user fa-xs" style="color:#2ecc71;"></i>
+                                    </div>
+                                    <div>
+                                        <span class="fw-500" style="font-weight:500;">@Model.Students[i].StudentName</span>
+                                        @if (Model.Students[i].HasExistingRecord)
+                                        {
+                                            <span class="badge ms-1"
+                                                  style="background:rgba(245,158,11,0.1);color:#d97706;border:1px solid rgba(245,158,11,0.2);font-size:0.7rem;">
+                                                Update
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                                <input type="hidden" name="Students[@i].StudentId"        value="@Model.Students[i].StudentId" />
+                                <input type="hidden" name="Students[@i].StudentName"      value="@Model.Students[i].StudentName" />
+                                <input type="hidden" name="Students[@i].HasExistingRecord" value="@Model.Students[i].HasExistingRecord" />
+                            </td>
+                            <td>
+                                <select name="Students[@i].Status"
+                                        class="form-select form-select-sm"
+                                        style="max-width:160px;font-weight:500;">
+                                    @if (Model.Students[i].Status == AttendanceStatus.Present)
+                                    { <option value="0" selected>✅ Present</option> }
+                                    else { <option value="0">✅ Present</option> }
+
+                                    @if (Model.Students[i].Status == AttendanceStatus.Absent)
+                                    { <option value="1" selected>❌ Absent</option> }
+                                    else { <option value="1">❌ Absent</option> }
+
+                                    @if (Model.Students[i].Status == AttendanceStatus.Leave)
+                                    { <option value="2" selected>🏖 Leave</option> }
+                                    else { <option value="2">🏖 Leave</option> }
+                                </select>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table class="table mb-0">
-                <thead class="table-light">
-                    <tr><th>Student</th><th>Status</th></tr>
-                </thead>
-                <tbody>
-                @for (var i = 0; i < Model.Students.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.Students[i].StudentName
-                            @if (Model.Students[i].HasExistingRecord)
-                            {
-                                <span class="badge bg-secondary ms-1">Update</span>
-                            }
-                            <input type="hidden" name="Students[@i].StudentId" value="@Model.Students[i].StudentId" />
-                            <input type="hidden" name="Students[@i].StudentName" value="@Model.Students[i].StudentName" />
-                            <input type="hidden" name="Students[@i].HasExistingRecord" value="@Model.Students[i].HasExistingRecord" />
-                        </td>
-                        <td>
-                            <select name="Students[@i].Status" class="form-select form-select-sm" style="max-width: 160px;">
-                                @if (Model.Students[i].Status == AttendanceStatus.Present)
-                                {
-                                    <option value="0" selected>Present</option>
-                                }
-                                else { <option value="0">Present</option> }
-                                @if (Model.Students[i].Status == AttendanceStatus.Absent)
-                                {
-                                    <option value="1" selected>Absent</option>
-                                }
-                                else { <option value="1">Absent</option> }
-                                @if (Model.Students[i].Status == AttendanceStatus.Leave)
-                                {
-                                    <option value="2" selected>Leave</option>
-                                }
-                                else { <option value="2">Leave</option> }
-                            </select>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </div>
-        <div class="card-body">
-            <button type="submit" class="btn btn-primary">Save Attendance</button>
-            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+
+        <!-- Action buttons -->
+        <div class="d-flex gap-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Save Attendance
+            </button>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fa-solid fa-xmark me-1"></i>Cancel
+            </a>
         </div>
     </form>
 }
 else if (Model.CourseId > 0)
 {
-    <div class="alert alert-warning">No students enrolled in this course.</div>
+    <div class="card border-0 text-center py-5"
+         style="border-radius:1rem;background:rgba(245,158,11,0.05);border:1.5px dashed rgba(245,158,11,0.3)!important;">
+        <div style="color:#d97706;">
+            <i class="fa-solid fa-users-slash fa-2x mb-3 d-block"></i>
+            <p class="fw-600 mb-0" style="font-weight:600;">No students enrolled in this course.</p>
+            <p class="text-muted mt-1 mb-0" style="font-size:0.85rem;">Please assign students to the course first.</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card border-0 text-center py-5"
+         style="border-radius:1rem;background:#f8fafc;border:1.5px dashed #e2e8f0!important;">
+        <div style="color:#94a3b8;">
+            <i class="fa-solid fa-hand-pointer fa-2x mb-3 d-block" style="opacity:0.4;"></i>
+            <p class="mb-0" style="font-size:0.9rem;">Select a course and date above to load students.</p>
+        </div>
+    </div>
 }

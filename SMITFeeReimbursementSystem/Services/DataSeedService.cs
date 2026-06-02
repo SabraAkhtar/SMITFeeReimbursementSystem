@@ -21,8 +21,9 @@ public class DataSeedService(
 
     private async Task SeedAdminAsync()
     {
-        const string adminEmail = "subrahkhan3@gmail.com";
-        const string adminPassword = "SubraAkhtar12345";
+        const string adminEmail = "admin@smit.edu.pk";
+        const string adminPassword = "smit1234";
+
 
         var existing = await userManager.FindByEmailAsync(adminEmail);
         if (existing is not null)

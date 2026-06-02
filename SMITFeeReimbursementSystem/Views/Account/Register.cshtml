@@ -4,120 +4,173 @@
     var isFirstUser = ViewBag.IsFirstUser as bool? ?? false;
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
+<style>
+.auth-wrap {
+    min-height: 82vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+.auth-card { width: 100%; max-width: 460px; }
+.auth-logo-wrap {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, #0f1923 0%, #1a2332 100%);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.25rem;
+    box-shadow: 0 6px 20px rgba(15,25,35,0.25);
+}
+.auth-logo-wrap i { font-size: 1.75rem; color: #2ecc71; }
+.auth-input-group .input-group-text {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-right: none;
+    color: #94a3b8;
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+.auth-input-group .form-control,
+.auth-input-group .form-select {
+    border: 1.5px solid #e2e8f0;
+    border-left: none;
+    border-radius: 0 0.5rem 0.5rem 0 !important;
+    padding-left: 0.5rem;
+}
+.auth-input-group .form-control:focus,
+.auth-input-group .form-select:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 0 3px rgba(46,204,113,0.12);
+    z-index: 2;
+}
+.auth-submit-btn {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.75rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 14px rgba(46,204,113,0.35);
+    transition: all 0.2s;
+    width: 100%;
+}
+.auth-submit-btn:hover {
+    box-shadow: 0 6px 20px rgba(46,204,113,0.45);
+    transform: translateY(-1px);
+    color: #fff;
+}
+.admin-crown-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #f59e0b;
+    border-radius: 0.4rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 1rem;
+}
+</style>
+
+<div class="auth-wrap">
+    <div class="auth-card">
         <div class="text-center mb-4">
-            <div class="auth-logo mx-auto mb-3">
-                <i class="fa-solid fa-user-plus fa-xl text-primary"></i>
+            <div class="auth-logo-wrap">
+                <i class="fa-solid fa-user-plus"></i>
             </div>
-            <h3 class="fw-bold mb-1">Create Account</h3>
-            <p class="text-muted small">Join SMIT Fee Reimbursement System</p>
+            <h2 class="fw-800 mb-1" style="font-weight:800;font-size:1.5rem;letter-spacing:-0.03em;">Create Account</h2>
+            <p class="text-muted mb-0" style="font-size:0.875rem;">Join the SMIT Fee Reimbursement System</p>
         </div>
 
         @if (isFirstUser)
         {
-            <div class="alert alert-info border-0 small">
-                <i class="fa-solid fa-crown me-2 text-warning"></i>
-                You are the first user — you'll automatically receive the <strong>Admin</strong> role.
+            <div class="admin-crown-badge w-100 justify-content-center">
+                <i class="fa-solid fa-crown text-warning"></i>
+                First user — you'll automatically receive the <strong>Admin</strong> role
             </div>
         }
 
-        <div class="card border-0 shadow-sm">
+        <div class="card border-0 shadow" style="border-radius:1rem;">
             <div class="card-body p-4">
                 <form asp-action="Register" method="post" data-loading="true">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3 small"></div>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
 
                     <div class="mb-3">
-                        <label asp-for="FullName" class="form-label fw-semibold small"></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0">
-                                <i class="fa-solid fa-user text-muted small"></i>
-                            </span>
-                            <input asp-for="FullName" class="form-control border-start-0 ps-0" placeholder="Your full name" />
+                        <label asp-for="FullName" class="form-label"></label>
+                        <div class="input-group auth-input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-user fa-sm"></i></span>
+                            <input asp-for="FullName" class="form-control" placeholder="Your full name" />
                         </div>
-                        <span asp-validation-for="FullName" class="text-danger small"></span>
+                        <span asp-validation-for="FullName" class="text-danger d-block mt-1"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="RollNumber" class="form-label fw-semibold small"></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0">
-                                <i class="fa-solid fa-id-card text-muted small"></i>
-                            </span>
-                            <input asp-for="RollNumber" class="form-control border-start-0 ps-0" placeholder="e.g. SMIT-2024-001" />
+                        <label asp-for="RollNumber" class="form-label"></label>
+                        <div class="input-group auth-input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-id-card fa-sm"></i></span>
+                            <input asp-for="RollNumber" class="form-control" placeholder="e.g. SMIT-2024-001" />
                         </div>
-                        <span asp-validation-for="RollNumber" class="text-danger small"></span>
+                        <span asp-validation-for="RollNumber" class="text-danger d-block mt-1"></span>
                     </div>
 
                     <div class="mb-3">
-                        <label asp-for="Email" class="form-label fw-semibold small"></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0">
-                                <i class="fa-solid fa-envelope text-muted small"></i>
-                            </span>
-                            <input asp-for="Email" class="form-control border-start-0 ps-0"
+                        <label asp-for="Email" class="form-label"></label>
+                        <div class="input-group auth-input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-envelope fa-sm"></i></span>
+                            <input asp-for="Email" class="form-control"
                                    autocomplete="username" placeholder="your@email.com" />
                         </div>
-                        <span asp-validation-for="Email" class="text-danger small"></span>
+                        <span asp-validation-for="Email" class="text-danger d-block mt-1"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label fw-semibold small"></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0">
-                                <i class="fa-solid fa-lock text-muted small"></i>
-                            </span>
-                            <input asp-for="Password" class="form-control border-start-0 ps-0"
-                                   autocomplete="new-password" placeholder="Min. 6 characters" />
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Password" class="form-label"></label>
+                            <div class="input-group auth-input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-lock fa-sm"></i></span>
+                                <input asp-for="Password" class="form-control"
+                                       autocomplete="new-password" placeholder="Min. 6 chars" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger d-block mt-1"></span>
                         </div>
-                        <span asp-validation-for="Password" class="text-danger small"></span>
-                    </div>
-
-                    <div class="mb-3">
-                        <label asp-for="ConfirmPassword" class="form-label fw-semibold small"></label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0">
-                                <i class="fa-solid fa-lock text-muted small"></i>
-                            </span>
-                            <input asp-for="ConfirmPassword" class="form-control border-start-0 ps-0"
-                                   autocomplete="new-password" placeholder="Repeat password" />
+                        <div class="col-md-6">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <div class="input-group auth-input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-lock fa-sm"></i></span>
+                                <input asp-for="ConfirmPassword" class="form-control"
+                                       autocomplete="new-password" placeholder="Repeat" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger d-block mt-1"></span>
                         </div>
-                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                     </div>
 
                     @if (!isFirstUser)
                     {
                         <div class="mb-4">
-                            <label asp-for="Role" class="form-label fw-semibold small"></label>
-                            <select asp-for="Role" class="form-select"
-                                    asp-items="@(new SelectList(SMITFeeReimbursementSystem.Models.AppRoles.Registerable))">
-                            </select>
-                            <span asp-validation-for="Role" class="text-danger small"></span>
+                            <label asp-for="Role" class="form-label"></label>
+                            <div class="input-group auth-input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-user-tag fa-sm"></i></span>
+                                <select asp-for="Role" class="form-select"
+                                        asp-items="@(new SelectList(SMITFeeReimbursementSystem.Models.AppRoles.Registerable))">
+                                </select>
+                            </div>
+                            <span asp-validation-for="Role" class="text-danger d-block mt-1"></span>
                         </div>
                     }
 
-                    <button type="submit" class="btn btn-primary w-100 py-2">
+                    <button type="submit" class="auth-submit-btn mt-1">
                         <i class="fa-solid fa-user-plus me-2"></i>Create Account
                     </button>
                 </form>
             </div>
         </div>
 
-        <p class="text-center mt-3 small text-muted">
+        <p class="text-center mt-3 text-muted" style="font-size:0.875rem;">
             Already have an account?
-            <a asp-action="Login" class="fw-semibold">Sign in</a>
+            <a asp-action="Login" style="color:#2ecc71;font-weight:600;">Sign in</a>
         </p>
     </div>
 </div>
-
-<style>
-.auth-logo {
-    width: 64px; height: 64px;
-    background: #e0e7ff;
-    border-radius: 16px;
-    display: flex; align-items: center; justify-content: center;
-}
-</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

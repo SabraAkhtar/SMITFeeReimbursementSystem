@@ -1,63 +1,124 @@
 @model IEnumerable<SMITFeeReimbursementSystem.ViewModels.CourseListItemViewModel>
 @{
     ViewData["Title"] = "Courses";
+    Layout = "_AdminLayout";
 }
 
 <partial name="_StatusMessage" />
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h2 text-primary mb-0">Course Management</h1>
-    <a class="btn btn-primary" asp-action="Create">Add Course</a>
+<!-- Page Header -->
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 class="mb-0" style="font-weight:800;font-size:1.25rem;letter-spacing:-0.02em;color:#0f1923;">Course Management</h2>
+        <p class="text-muted mb-0" style="font-size:0.875rem;">Manage all available courses and enrollments</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">
+        <i class="fa-solid fa-plus me-2"></i>Add Course
+    </a>
 </div>
 
-<form method="get" class="row g-2 mb-4">
-    <div class="col-md-8">
-        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by name, duration, or description..." />
-    </div>
-    <div class="col-md-4">
-        <button type="submit" class="btn btn-outline-primary me-2">Search</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
-    </div>
-</form>
+<!-- Search bar -->
+<div class="filter-bar">
+    <form method="get">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-8 col-lg-9">
+                <div class="input-group">
+                    <span class="input-group-text bg-white" style="border-right:none;">
+                        <i class="fa-solid fa-magnifying-glass text-muted"></i>
+                    </span>
+                    <input type="text" name="search" value="@ViewBag.Search"
+                           class="form-control" style="border-left:none;"
+                           placeholder="Search by name, duration, or description..." />
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">
+                    <i class="fa-solid fa-search me-1"></i>Search
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
 
-<div class="card border-0 shadow-sm">
+<!-- Table -->
+<div class="admin-table-card">
     <div class="table-responsive">
-        <table class="table table-hover mb-0">
-            <thead class="table-light">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
                 <tr>
                     <th>Course</th>
                     <th>Fee</th>
                     <th>Duration</th>
-                    <th>Students</th>
-                    <th class="text-end">Actions</th>
+                    <th class="text-center">Students</th>
+                    <th class="text-end" style="width:200px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
-            @if (!Model.Any())
-            {
-                <tr><td colspan="5" class="text-center text-muted py-4">No courses found.</td></tr>
-            }
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        <strong>@item.CourseName</strong>
-                        @if (!string.IsNullOrEmpty(item.Description))
-                        {
-                            <div class="small text-muted">@(item.Description.Length > 60 ? item.Description[..60] + "..." : item.Description)</div>
-                        }
-                    </td>
-                    <td>Rs. @item.FeeAmount.ToString("N0")</td>
-                    <td>@item.Duration</td>
-                    <td><span class="badge bg-secondary">@item.EnrolledCount</span></td>
-                    <td class="text-end text-nowrap">
-                        <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                        <a class="btn btn-sm btn-outline-success" asp-action="AssignStudents" asp-route-id="@item.Id">Assign</a>
-                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <div style="color:#94a3b8;">
+                                <i class="fa-solid fa-book-open fa-2x mb-3 d-block" style="opacity:0.3;"></i>
+                                <p class="mb-2">No courses found.</p>
+                                <a asp-action="Create" class="btn btn-sm btn-primary">Add First Course</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(46,204,113,0.15),rgba(46,204,113,0.05));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(46,204,113,0.2);">
+                                    <i class="fa-solid fa-book-open" style="color:#2ecc71;font-size:0.85rem;"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-600" style="font-weight:600;font-size:0.9rem;">@item.CourseName</div>
+                                    @if (!string.IsNullOrEmpty(item.Description))
+                                    {
+                                        <div class="text-muted" style="font-size:0.78rem;">
+                                            @(item.Description.Length > 60 ? item.Description[..60] + "…" : item.Description)
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="fw-600" style="color:#2ecc71;">Rs. @item.FeeAmount.ToString("N0")</span>
+                        </td>
+                        <td>
+                            <span style="background:#f1f5f9;color:#475569;font-size:0.8rem;padding:0.25rem 0.6rem;border-radius:0.35rem;font-weight:500;">
+                                <i class="fa-regular fa-clock me-1 opacity-50"></i>@item.Duration
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span class="badge" style="background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);font-size:0.8rem;">
+                                @item.EnrolledCount enrolled
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="d-flex gap-1 justify-content-end">
+                                <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.Id" title="Details">
+                                    <i class="fa-solid fa-eye"></i>
+                                </a>
+                                <a class="btn btn-sm btn-outline-success" asp-action="AssignStudents" asp-route-id="@item.Id" title="Assign Students">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </a>
+                                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@item.Id" title="Edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id" title="Delete">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

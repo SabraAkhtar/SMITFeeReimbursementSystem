@@ -41,6 +41,14 @@ public class ChangePasswordViewModel
     public string ConfirmPassword { get; set; } = string.Empty;
 }
 
+public class ChangeEmailViewModel
+{
+    [Required]
+    [EmailAddress]
+    [Display(Name = "New Email Address")]
+    public string NewEmail { get; set; } = string.Empty;
+}
+
 public class ForgotPasswordViewModel
 {
     [Required]
