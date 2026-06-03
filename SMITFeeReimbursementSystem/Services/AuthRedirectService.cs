@@ -14,7 +14,7 @@ public class AuthRedirectService(UserManager<ApplicationUser> userManager) : IAu
             return "/Attendance/Mark";
 
         if (await userManager.IsInRoleAsync(user, AppRoles.Student))
-            return "/Payments/MyPayments";
+            return "/Student/Dashboard";
 
         return "/";
     }
