@@ -29,20 +29,28 @@ public class DataSeedService(
     {
         await context.Database.ExecuteSqlRawAsync("""
             CREATE TABLE IF NOT EXISTS "Notifications" (
-                "Id"        INTEGER NOT NULL CONSTRAINT "PK_Notifications" PRIMARY KEY AUTOINCREMENT,
-                "Title"     TEXT    NOT NULL,
-                "Message"   TEXT    NOT NULL,
-                "ActionUrl" TEXT    NULL,
-                "Type"      INTEGER NOT NULL DEFAULT 0,
-                "IsRead"    INTEGER NOT NULL DEFAULT 0,
-                "CreatedAt" TEXT    NOT NULL,
-                "PaymentId" INTEGER NULL,
+                "Id"         INTEGER NOT NULL CONSTRAINT "PK_Notifications" PRIMARY KEY AUTOINCREMENT,
+                "Title"      TEXT    NOT NULL,
+                "Message"    TEXT    NOT NULL,
+                "ActionUrl"  TEXT    NULL,
+                "Type"       INTEGER NOT NULL DEFAULT 0,
+                "IsRead"     INTEGER NOT NULL DEFAULT 0,
+                "CreatedAt"  TEXT    NOT NULL,
+                "ForUserId"  TEXT    NULL,
+                "PaymentId"  INTEGER NULL,
                 CONSTRAINT "FK_Notifications_Payments_PaymentId"
                     FOREIGN KEY ("PaymentId") REFERENCES "Payments" ("Id") ON DELETE SET NULL
             );
             """);
 
-        // Ensure indexes
+        // Add ForUserId column if table already exists without it (for existing deployments)
+        try
+        {
+            await context.Database.ExecuteSqlRawAsync(
+                "ALTER TABLE \"Notifications\" ADD COLUMN \"ForUserId\" TEXT NULL;");
+        }
+        catch { /* Column already exists — ignore */ }
+
         await context.Database.ExecuteSqlRawAsync(
             "CREATE INDEX IF NOT EXISTS \"IX_Notifications_IsRead\" ON \"Notifications\" (\"IsRead\");");
         await context.Database.ExecuteSqlRawAsync(
