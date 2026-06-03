@@ -15,7 +15,8 @@ public class PaymentsController(
     ApplicationDbContext context,
     UserManager<ApplicationUser> userManager,
     IFileUploadService fileUploadService,
-    IReceiptService receiptService) : Controller
+    IReceiptService receiptService,
+    INotificationService notificationService) : Controller
 {
     [Authorize(Roles = AppRoles.Student)]
     public async Task<IActionResult> MyPayments(string? search, string? status)
@@ -126,6 +127,11 @@ public class PaymentsController(
             context.Payments.Add(payment);
             await context.SaveChangesAsync();
 
+            // Notify admin about new payment submission
+            var studentName = user.FullName ?? user.Email ?? "A student";
+            await notificationService.CreatePaymentSubmittedNotificationAsync(
+                payment.Id, studentName, course.CourseName, payment.Amount);
+
             TempData["StatusMessage"] = "Payment submitted successfully. Awaiting admin approval.";
             return RedirectToAction(nameof(MyPayments));
         }
@@ -222,8 +228,13 @@ public class PaymentsController(
         await context.SaveChangesAsync();
         await receiptService.GenerateReceiptAsync(id);
 
-        TempData["StatusMessage"] = "Payment approved and PDF receipt generated.";
-        return RedirectToAction(nameof(Receipt), new { id });
+        // Notify student their payment was approved
+        var course = await context.Courses.FindAsync(payment.CourseId);
+        await notificationService.CreatePaymentApprovedNotificationAsync(
+            id, payment.StudentId, course?.CourseName ?? "your course", payment.Amount);
+
+        TempData["StatusMessage"] = $"Payment approved and PDF receipt generated for {payment.Student?.FullName ?? "student"}.";
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -250,6 +261,12 @@ public class PaymentsController(
         payment.ReviewedById = admin?.Id;
 
         await context.SaveChangesAsync();
+
+        // Notify student their payment was rejected
+        var course = await context.Courses.FindAsync(payment.CourseId);
+        await notificationService.CreatePaymentRejectedNotificationAsync(
+            id, payment.StudentId, course?.CourseName ?? "your course", adminRemarks);
+
         TempData["StatusMessage"] = "Payment rejected.";
         return RedirectToAction(nameof(Index));
     }
@@ -316,6 +333,7 @@ public class PaymentsController(
     private async Task<Payment?> GetPaymentForReviewAsync(int id)
     {
         return await context.Payments
+            .Include(p => p.Student)
             .Include(p => p.Receipt)
             .FirstOrDefaultAsync(p => p.Id == id);
     }

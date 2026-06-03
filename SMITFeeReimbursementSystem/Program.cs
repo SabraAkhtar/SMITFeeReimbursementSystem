@@ -33,6 +33,7 @@ builder.Services.AddScoped<IReceiptService, ReceiptService>();
 builder.Services.AddScoped<IAttendanceCalculationService, AttendanceCalculationService>();
 builder.Services.AddScoped<IRefundEligibilityService, RefundEligibilityService>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddControllersWithViews();
 
 // ---- PORT for Railway ----

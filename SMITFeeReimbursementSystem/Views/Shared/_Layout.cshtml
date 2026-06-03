@@ -123,6 +123,12 @@
                         }
                     </ul>
                     <partial name="_LoginPartial" />
+                    @if (User.IsInRole("Admin") || User.IsInRole("Student"))
+                    {
+                        <ul class="navbar-nav ms-2">
+                            @await Component.InvokeAsync("NotificationBell")
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>

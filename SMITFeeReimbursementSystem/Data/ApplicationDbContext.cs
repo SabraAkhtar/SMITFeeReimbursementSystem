@@ -13,6 +13,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Receipt> Receipts => Set<Receipt>();
     public DbSet<Attendance> Attendances => Set<Attendance>();
     public DbSet<Refund> Refunds => Set<Refund>();
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -105,6 +106,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.HasOne(r => r.ReviewedBy)
                 .WithMany()
                 .HasForeignKey(r => r.ReviewedById)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        builder.Entity<Notification>(entity =>
+        {
+            entity.HasIndex(n => n.IsRead);
+            entity.HasIndex(n => n.CreatedAt);
+            entity.HasOne(n => n.Payment)
+                .WithMany()
+                .HasForeignKey(n => n.PaymentId)
                 .OnDelete(DeleteBehavior.SetNull);
         });
     }

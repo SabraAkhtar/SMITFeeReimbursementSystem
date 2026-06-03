@@ -14,9 +14,39 @@ public class DataSeedService(
     public async Task SeedAsync()
     {
         await context.Database.EnsureCreatedAsync();
+        // Ensure any new tables added after initial EnsureCreated are present
+        await EnsureNotificationsTableAsync();
         await SeedRolesAsync();
         await SeedCoursesAsync();
         await SeedAdminAsync();
+    }
+
+    /// <summary>
+    /// EnsureCreatedAsync won't alter existing DBs, so manually create
+    /// the Notifications table if it doesn't exist yet.
+    /// </summary>
+    private async Task EnsureNotificationsTableAsync()
+    {
+        await context.Database.ExecuteSqlRawAsync("""
+            CREATE TABLE IF NOT EXISTS "Notifications" (
+                "Id"        INTEGER NOT NULL CONSTRAINT "PK_Notifications" PRIMARY KEY AUTOINCREMENT,
+                "Title"     TEXT    NOT NULL,
+                "Message"   TEXT    NOT NULL,
+                "ActionUrl" TEXT    NULL,
+                "Type"      INTEGER NOT NULL DEFAULT 0,
+                "IsRead"    INTEGER NOT NULL DEFAULT 0,
+                "CreatedAt" TEXT    NOT NULL,
+                "PaymentId" INTEGER NULL,
+                CONSTRAINT "FK_Notifications_Payments_PaymentId"
+                    FOREIGN KEY ("PaymentId") REFERENCES "Payments" ("Id") ON DELETE SET NULL
+            );
+            """);
+
+        // Ensure indexes
+        await context.Database.ExecuteSqlRawAsync(
+            "CREATE INDEX IF NOT EXISTS \"IX_Notifications_IsRead\" ON \"Notifications\" (\"IsRead\");");
+        await context.Database.ExecuteSqlRawAsync(
+            "CREATE INDEX IF NOT EXISTS \"IX_Notifications_CreatedAt\" ON \"Notifications\" (\"CreatedAt\");");
     }
 
     private async Task SeedAdminAsync()
